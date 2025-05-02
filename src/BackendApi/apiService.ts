@@ -212,3 +212,4 @@ export const googleAuth = async()=>{
   window.location.href = `${BASE_URL}/google`;
 
 }
+

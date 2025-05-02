@@ -1,28 +1,44 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-    status : false,
-    userData: null
+interface UserData {
+  _id: string;
+  name: string;
+  email: string;
+  googleId: string;
+  provider: "google" | "local"; // Adjust if you support more providers
+  createdAt: string; // ISO timestamp
+  updatedAt: string; // ISO timestamp
+  __v: number;
 }
 
-const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        login: (state, action) => {
-            state.status = true;
-            state.userData = action.payload;
-        },
-        logout: (state) => {
-            state.status = false;
-            state.userData = null;
-        },
-        updateUserData:(state,action)=>{
-            state.userData = action.payload;
-        }
-     }
-})
+interface AuthState {
+  status: boolean;
+  userData: UserData | null;
+}
 
-export const {login, logout, updateUserData} = authSlice.actions;
+const initialState: AuthState = {
+  status: false,
+  userData: null,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    login: (state, action: PayloadAction<UserData>) => {
+      state.status = true;
+      state.userData = action.payload;
+    },
+    logout: (state) => {
+      state.status = false;
+      state.userData = null;
+    },
+    updateUserData: (state, action: PayloadAction<UserData>) => {
+      state.userData = action.payload;
+    },
+  },
+});
+
+export const { login, logout, updateUserData } = authSlice.actions;
 
 export default authSlice.reducer;

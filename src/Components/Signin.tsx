@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
 import LoadingBtn from "./Assets/Loadingbtn";
 
-export default function Signin(_props)
+export default function Signin(_props: { setSignupModal: (arg0: boolean) => void; })
 {
   const [formData, setFormData] = useState({ name: "", email: "", password: "",confirmPassword:"" }); // Form Data object
   const [error, setError] = useState("");
@@ -19,6 +19,7 @@ const [loading,setLoading] = useState(false);
 
 
       const { name, email, password,confirmPassword } = formData;
+
       if (!name || !email || !password || !confirmPassword) {
         setError("All fields are required");
         return;
@@ -53,7 +54,8 @@ const [loading,setLoading] = useState(false);
     }
 
     // Function to handle form change
-    const handleFormChange = (e) => {
+    const handleFormChange = (e:{ target: { name: string, value: string } }) => {
+      
       const { name, value } = e.target;
       setFormData(prev => ({ ...prev, [name]: value }));
     };

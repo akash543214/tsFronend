@@ -11,7 +11,7 @@ interface FormProps
     setPriority: (arg0: string) => void; 
     setDeadline: (arg0: string) => void; 
     setIsComplete: (arg0: string) => void; 
-    handleClick: unknown; 
+    handleClick: ()=>Promise<void>; 
   };
 
 
