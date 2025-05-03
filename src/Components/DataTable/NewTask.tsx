@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Modal from "./Assets/Modal";
-import Form from "./Assets/Form";
-import Button from "./Assets/Button";
-import { addTask } from "../BackendApi/apiService";
+import Modal from "../Assets/Modal";
+import Form from "../Assets/Form";
+import Button from "../Assets/Button";
+import { addTask } from "../../BackendApi/apiService";
 
 
 export default function NewTask(_props: { getTasksData: () => void; })

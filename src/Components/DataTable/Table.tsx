@@ -1,5 +1,5 @@
 import TaskComponent from "./TaskComponent";
-import LoadScreen from "./Assets/LoadScreen";
+import LoadScreen from "../Assets/LoadScreen";
 
 interface Task {
   _id: string;               
@@ -14,15 +14,16 @@ interface Task {
   __v: number;               
  }
 
-export default function Table(_props: { 
+export default function Table(tableProps: { 
   isLoading: boolean; 
   taskData: Task[]; 
   getTasksData: () => void; })
    {
-  const tableHeaders = ['Title', 'Status', 'Priority', 'Deadline', 'Action'];
+      const tableHeaders = ['Title', 'Status', 'Priority', 'Deadline', 'Action'];
+      
+      const {taskData,isLoading,getTasksData} = tableProps;
 
-
-  if (_props.isLoading) {
+  if (isLoading) {
     return (
      <LoadScreen />
     );
@@ -35,23 +36,21 @@ export default function Table(_props: {
               <tr className="bg-gray-100">
                 {  tableHeaders.map((title,index) => (
                         <th key={index} className="px-4 py-2 text-left text-gray-600">{title}</th>
-                    ))   }
+                    ))}
                  </tr>
             </thead>
             <tbody>
 
               {/* Task Row with Dropdown for Subtasks */}
-           {_props.taskData.length===0?(<tr>
-            <td colSpan={tableHeaders.length} className="text-center py-4 text-gray-500">
-              No tasks available. Create a new task to get started!
+           {taskData.length===0?(<tr>
+            <td colSpan={tableHeaders.length} 
+            className="text-center py-4 text-gray-500">
+            No tasks available. Create a new task to get started!
             </td>
-          </tr>): (_props.taskData.map((item,index)=> 
-           
-            <TaskComponent key={index} 
+          </tr>): (taskData.map((item,index)=> 
+          <TaskComponent key={index} 
             task={item} 
-            getTasksData={_props.getTasksData}/>))}
-            
-
+            getTasksData={getTasksData}/>))}    
             </tbody>
           </table>
     );

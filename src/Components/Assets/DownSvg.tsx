@@ -1,7 +1,14 @@
-function DownArrow({ isOpen }) {
+
+type DownArrowProps = {
+    isOpen: boolean;
+};
+
+function DownArrow( props: DownArrowProps) {
+    const { isOpen } = props;
+  
     return (
       <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`}
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

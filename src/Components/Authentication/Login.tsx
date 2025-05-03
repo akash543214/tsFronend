@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { loginUser, googleAuth } from "../BackendApi/apiService";
+import { loginUser, googleAuth } from "../../BackendApi/apiService";
 import { useDispatch } from "react-redux";
-import { login } from "../store/authSlice";
-import LoadingBtn from "./Assets/Loadingbtn";
+import { login } from "../../store/authSlice";
+import LoadingBtn from "../Assets/Loadingbtn";
 
 // Fix the props type: it should be an object with `setLoginModal` as a prop
 interface LoginProps {

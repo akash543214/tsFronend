@@ -1,9 +1,10 @@
 import { useState,useRef,useEffect } from 'react';
-import { deleteTask, editTask } from '../BackendApi/apiService';
-import Editsvg from './Assets/Editsvg';
-import Dropdown from './Assets/Dropdown';
+import { deleteTask, editTask } from '../../BackendApi/apiService';
+import Editsvg from '../Assets/Editsvg';
+import Dropdown from '../Assets/Dropdown';
 
-type taskdata = {  content: string; 
+type taskdata = {  
+  content: string; 
   deadline: string; 
   _id: string; 
   isComplete: string; 
@@ -15,6 +16,7 @@ export default function TaskComponent(_props:
   { task: taskdata; 
     getTasksData: () => void; }) 
 {
+
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [task, setTask] = useState(_props.task.content);
@@ -32,6 +34,7 @@ export default function TaskComponent(_props:
     }
   };
 
+  
   const editFunction = async (key: string,value: string) => {
     try {
       await editTask({ id: _props.task._id, fieldToUpdate: { [key]: value } });
@@ -128,11 +131,15 @@ export default function TaskComponent(_props:
             editFunction('deadline',e.target.value);
             
           }} 
-           className="cursor-pointer text-gray-500 font-semibold" value={date}></input>
+           className="cursor-pointer text-gray-500 font-semibold"
+            value={date}></input>
           </td>
 
         <td className="px-4 py-3">
-         <Dropdown options={["Delete"]} selected="..." taskFunction={handleDelete} type="delete"/>
+         <Dropdown options={["Delete"]} 
+         selected="..." 
+         taskFunction={handleDelete} 
+         type="delete"/>
         </td>
       </tr>
     </>

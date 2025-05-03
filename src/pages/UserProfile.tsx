@@ -1,5 +1,5 @@
 import { FaUserEdit, FaKey } from "react-icons/fa";
-import { RootState } from "../store/store"; // Adjust path if needed
+import { RootState } from "../store/store"; 
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { updateUser, updatePassword } from "../BackendApi/apiService";

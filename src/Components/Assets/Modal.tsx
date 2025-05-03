@@ -1,10 +1,19 @@
 import Button from "./Button";
 import { createPortal } from "react-dom";
 
- export default function({ children, title, onClick }){
+type ModalProps = {
+  children: React.ReactNode;
+  title?: string;
+  onClick: () => void;
+};
+
+ export default function(modalProps: ModalProps) {
+
+  const { children, title, onClick } = modalProps;
+
   return createPortal(
     <div
-      tabIndex="-1" // Allows the modal to receive focus
+      tabIndex={-1} // Allows the modal to receive focus
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4"
       role="dialog"
       aria-modal="true"

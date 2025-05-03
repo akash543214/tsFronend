@@ -1,4 +1,4 @@
-import Button from "./Assets/Button";
+import Button from "../Assets/Button";
 
 export default function PaginationUI()
 {
@@ -7,9 +7,7 @@ export default function PaginationUI()
                 <Button >
                   Previous
                 </Button>
-                <span className="text-gray-700">
-                  Page 1 of 1
-                </span>
+               
                 <Button>
                   Next
                 </Button>

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { createUser } from "../BackendApi/apiService";
-import { loginUser } from "../BackendApi/apiService";
+import { createUser } from "../../BackendApi/apiService";
+import { loginUser } from "../../BackendApi/apiService";
 import { useDispatch } from "react-redux";
-import { login } from "../store/authSlice";
-import LoadingBtn from "./Assets/Loadingbtn";
+import { login } from "../../store/authSlice";
+import LoadingBtn from "../Assets/Loadingbtn";
 
 export default function Signin(_props: { setSignupModal: (arg0: boolean) => void; })
 {

@@ -1,14 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import DownArrow from "./DownSvg";
 
-export default function Dropdown(_props) {
+type DropdownProps = { selected: any; 
+  isHovered?: boolean; 
+  options: string[]; 
+  taskFunction: (arg0: any, arg1: any) => void; 
+  type: string; 
+};
+
+
+export default function Dropdown(_props:DropdownProps ) {
+  
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(_props.selected);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };

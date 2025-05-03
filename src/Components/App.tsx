@@ -1,4 +1,4 @@
-import Header from './Header.tsx'; 
+import Header from './Header/Header.tsx'; 
 import Footer from './Footer.tsx';
 import { Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';

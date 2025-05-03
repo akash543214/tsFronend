@@ -1,12 +1,20 @@
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
+import { RootState } from "../store/store"; 
 import {useNavigate} from 'react-router-dom';
 import LoadScreen from './Assets/LoadScreen';
 
-export default function AuthLayout({children, authentication = true}) {
+import { ReactNode } from 'react';
+
+interface AuthLayoutProps {
+    children: ReactNode;
+    authentication?: boolean;
+}
+
+export default function AuthLayout({ children, authentication = true }: AuthLayoutProps) {
         const navigate = useNavigate();
     const [loader, setLoader] = useState(true);
-    const authStatus = useSelector(state => state.auth.status);
+    const authStatus = useSelector((state:RootState) => state.auth.status);
 
     useEffect(() => {
 

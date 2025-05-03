@@ -1,8 +1,8 @@
 import {useState, useEffect, useCallback} from 'react';
 import { getTasks } from '../BackendApi/apiService';
-import Table from './Table';
-import NewTask from './NewTask';
-import PaginationUI from './PaginationUI';
+import Table from './DataTable/Table';
+import NewTask from './DataTable/NewTask';
+import PaginationUI from './DataTable/PaginationUI';
 
  interface Task {
   _id: string;               
