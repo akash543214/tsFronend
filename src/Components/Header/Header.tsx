@@ -112,8 +112,6 @@ const Header = () => {
 
   // Close dropdown when clicking outside
 
-
-
   const modals: ModalType[] = [
     {
       id: 'signup',
