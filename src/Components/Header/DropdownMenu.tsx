@@ -1,21 +1,36 @@
-import { memo } from "react";
+import { memo,useRef,useState } from "react";
 import { SubItem } from "../../types/common";
-
+import useClickOutside from "../../CustomHooks/useClickOutside";
+import Button from "../Assets/Button";
+import DownArrow from "../Assets/DownSvg";
 
 const DropdownMenu = ({ 
   subitems, 
-  dropdownRef, 
-  isOpen 
+  title
 }: { 
   subitems: SubItem[], 
-  dropdownRef: React.RefObject<HTMLLIElement>,
-  isOpen: boolean
+  title: string
 }) => {
-  if (!isOpen) return null;
+
+    const [dropdown, setDropdown] = useState(false);
+   const dropdownRef = useRef<HTMLDivElement>(null);
+    useClickOutside(dropdownRef,()=>setDropdown(false));
 
   return (
-    <div
-      ref={dropdownRef as any}
+      <div ref={dropdownRef} className="relative">
+    <Button
+    variant="outline"
+    onClick={()=>setDropdown(prev=>!prev)}>
+      
+    <span className="flex items-center">
+      {title}
+      <DownArrow isOpen={dropdown} 
+      aria-hidden="true" />
+    </span>
+  </Button>
+   { dropdown && <div
+      
+      onClick={() => setDropdown(prev => !prev)}
       className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10"
       role="menu"
       aria-orientation="vertical"
@@ -23,7 +38,7 @@ const DropdownMenu = ({
       {subitems.map(subitem =>
         subitem.active && (
           <button
-            key={subitem.slug}
+            key={subitem.name}
             onClick={subitem.action}
             className="w-full text-left px-4 py-2 hover:bg-gray-100 focus:outline-none focus:bg-gray-200"
             role="menuitem"
@@ -32,6 +47,7 @@ const DropdownMenu = ({
           </button>
         )
       )}
+    </div>}
     </div>
   );
 };

@@ -2,16 +2,16 @@
 
 export type SubItem = {
     name: string;
-    slug: string;
-    active: boolean;
-    action: () => void;
+    slug?: string;
+    active?: boolean;
+    action?: () => void;
   };
   
   export type NavItem = {
     name: string;
-    slug: string;
+    slug?: string;
     active: boolean;
-    action: () => void;
+    action?: () => void;
     hasDropdown?: boolean;
     subitems?: SubItem[];
     ariaLabel?: string;

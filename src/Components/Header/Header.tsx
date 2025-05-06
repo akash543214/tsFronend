@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { RootState } from "../../store/store";
 import Modal from '../Assets/Modal';
 import Signin from '../Authentication/Signin';
@@ -7,9 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../BackendApi/apiService';
 import { logout } from '../../store/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import DropdownMenu from './DropdownMenu';
 import NavItemComponent from './NavItemComponent';
-import useClickOutside from '../../CustomHooks/useClickOutside';
+//import useClickOutside from '../../CustomHooks/useClickOutside';
 
 type ModalType = {
   id: string;
@@ -18,32 +17,23 @@ type ModalType = {
   content: React.ReactNode;
 };
 
-DropdownMenu.displayName = 'DropdownMenu';
-
 // Memoized NavItem component to prevent unnecessary re-renders
-
-NavItemComponent.displayName = 'NavItemComponent';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signupModal, setSignupModal] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const authStatus = useSelector((state: RootState) => state.auth.status);
   const user = useSelector((state: RootState) => state.auth.userData);
-  const dropdownRef = useRef(null);
-
-  useClickOutside(dropdownRef, () => setDropdownOpen(false));
-
 
   // Memoized logout handler to prevent recreating on every render
   const handleLogout = useCallback(async () => {
     try {
       await logoutUser();
       dispatch(logout());
-      setDropdownOpen(false);
+      //setDropdown(false);
     } catch (err) {
       console.error(err, 'error logging out');
       // Show user feedback for failed logout
@@ -56,13 +46,10 @@ const Header = () => {
   const handleLoginClick = useCallback(() => setLoginModal(true), []);
   
   const handleProfileClick = useCallback(() => {
-    setDropdownOpen(false);
+    //setDropdown(false);
     navigate('/profile');
   }, [navigate]);
 
-  const handleDropdownToggle = useCallback(() => {
-    setDropdownOpen(prev => !prev);
-  }, []);
 
   // Close signup modal handler
   const closeSignupModal = useCallback(() => setSignupModal(false), []);
@@ -104,9 +91,13 @@ const Header = () => {
           slug: "#",
           active: true,
           action: handleLogout
+        },
+        {
+          name: "Settings",
+          active: true
         }
+
       ],
-      action: handleDropdownToggle
     }
   ];
 
@@ -131,8 +122,9 @@ const Header = () => {
     <>
       {modals.map(modal =>
         modal.isOpen && (
-          <Modal key={modal.id} onClick={modal.onClose}>
-            {modal.content}
+          <Modal key={modal.id} 
+           onClick={modal.onClose}>
+           {modal.content}
           </Modal>
         )
       )}
@@ -152,8 +144,6 @@ const Header = () => {
                   <NavItemComponent 
                     key={item.name}
                     item={item} 
-                    dropdownOpen={dropdownOpen} 
-                    dropdownRef={dropdownRef} 
                   />
                 )
               )}

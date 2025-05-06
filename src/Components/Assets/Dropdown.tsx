@@ -1,5 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import DownArrow from "./DownSvg";
+import useClickOutside from "../../CustomHooks/useClickOutside";
+
 
 type DropdownProps = { selected: any; 
   isHovered?: boolean; 
@@ -15,18 +17,7 @@ export default function Dropdown(_props:DropdownProps ) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(_props.selected);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  useClickOutside(dropdownRef, ()=>setIsOpen(false));
 
   return (
     <div className="relative w-48" ref={dropdownRef}>

@@ -27,7 +27,6 @@ const TaskManagerUI = () => {
     try {
       const response = await getTasks();
       setTaskData(response);
-      console.log("Task Data:", response);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     } finally{
