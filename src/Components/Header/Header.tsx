@@ -99,6 +99,7 @@ const Header = () => {
 
       ],
     }
+    
   ];
 
   // Close dropdown when clicking outside

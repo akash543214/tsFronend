@@ -29,7 +29,7 @@ const NavItemComponent = ({
         {item.hasDropdown && (
           <DropdownMenu 
             subitems={item.subitems || []} 
-            title = {item.name}
+            title = {item.name.split(" ")[0]}
           />
         )}
       </li>
