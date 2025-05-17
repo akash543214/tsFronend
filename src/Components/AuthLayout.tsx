@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import { RootState } from "../store/store"; 
 import {useNavigate} from 'react-router-dom';
 import LoadScreen from './Assets/LoadScreen';
+import Layout from '@/pages/Layout';
 
 import { ReactNode } from 'react';
 
@@ -28,7 +29,16 @@ export default function AuthLayout({ children, authentication = true }: AuthLayo
 
 
     }, [authStatus, authentication])
+     
+    if(!authStatus)
+    {
+        return children
+    }
 
-    return loader ? <LoadScreen /> : <>{children}</>
+    return loader ? <LoadScreen /> : <>
+    <Layout>
+    {children}
+    </Layout>
+    </>
 
 }

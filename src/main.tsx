@@ -4,10 +4,10 @@ import App from './Components/App.js';
 import { store } from './store/store.ts';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import HomePage from './pages/HomePage.js';
-import UserProfile from './pages/UserProfile.js';
-import LandingPage from './pages/LandingPage.js';
-import AuthLayout from './Components/AuthLayout.js'
+import HomePage from './pages/HomePage';
+import UserProfile from './pages/UserProfile';
+import LandingPage from './pages/LandingPage';
+import AuthLayout from './Components/AuthLayout'
 
 const router = createBrowserRouter(
 [

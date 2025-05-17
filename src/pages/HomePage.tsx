@@ -24,10 +24,10 @@ export default function HomePage()
   
     },[]);
    
-    return(
-        <DataTable columns={columns}
-            data={taskData}
-            isLoading={isLoading}
-        />
-    )
+    return (
+      
+        <DataTable columns={columns}  
+         data={taskData} 
+         isLoading={isLoading}/>  
+    );
 }

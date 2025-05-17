@@ -48,7 +48,8 @@ import {
      </div>)
       
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen">
+        
   <div className="flex justify-center mt-4 px-4">
     <div className="w-full max-w-4xl p-4 bg-white shadow-md rounded-md border">
         <Table>
