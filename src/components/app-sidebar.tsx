@@ -1,15 +1,31 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar,
+   Home, 
+   Inbox,
+   MoreHorizontal,
+   Plus,
+   Search, 
+   Settings
+   } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu"
 
 // Menu items.
 const items = [
@@ -40,12 +56,31 @@ const items = [
   },
 ]
 
+const projects = [
+
+  {
+    name: "Project A",
+    url: "#",
+    
+  },
+  {
+    name: "Project B",
+    url: "#",
+    
+  },
+  {
+    name: "Project C",
+    url: "#",
+  },
+]
+
 export function AppSidebar() {
   return (
     <Sidebar >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
+         
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -61,6 +96,43 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroup>
+      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupAction title="Add Project">
+        <Plus /> <span className="sr-only">Add Project</span>
+      </SidebarGroupAction>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {projects.map((project) => (
+            <SidebarMenuItem key={project.name}>
+              <SidebarMenuButton asChild>
+                <a href={project.url}>
+                  <span>{project.name}</span>
+                </a>
+
+              </SidebarMenuButton>
+              
+              <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <SidebarMenuAction>
+        <MoreHorizontal />
+      </SidebarMenuAction>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent side="right" align="start">
+      <DropdownMenuItem>
+        <span>Edit Project</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <span>Delete Project</span>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+            </SidebarMenuItem>
+            
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   )

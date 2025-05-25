@@ -91,10 +91,6 @@ const Header = () => {
           slug: "#",
           active: true,
           action: handleLogout
-        },
-        {
-          name: "Settings",
-          active: true
         }
 
       ],
@@ -131,7 +127,7 @@ const Header = () => {
       )}
 
       <header className="bg-white shadow" role="banner">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="mx-auto px-2 py-2 h-50">
           <nav className="flex justify-between items-center" aria-label="Main Navigation">
             <div className="mr-4">
               <Link to="/home" className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
