@@ -1,7 +1,8 @@
 import DataTable from "@/Components/shadDataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
 import { getTasks } from "@/BackendApi/apiService";
-import {columns,Task} from '../Components/shadDataTable/columns';
+import {columns} from '../Components/shadDataTable/columns';
+import { Task } from "@/types/common";
 //import TaskManagerUI from "../Components/TaskManagerUI";
 export default function HomePage()
 {
@@ -22,12 +23,14 @@ export default function HomePage()
     useEffect(()=>{
         getTasksData();
   
-    },[]);
+    },[getTasksData]);
    
+
     return (
       
         <DataTable columns={columns}  
          data={taskData} 
-         isLoading={isLoading}/>  
+         isLoading={isLoading}
+         />  
     );
 }

@@ -11,7 +11,7 @@ const handleResponse = async (response: Response) => {
 
 export const addTask = async (Task: { content: string; 
   priority: string; 
-  deadline: string; 
+  deadline: Date; 
   isComplete: string; }) => {
 
 const {content,priority,deadline,isComplete} = Task;

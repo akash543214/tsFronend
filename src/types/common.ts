@@ -24,3 +24,15 @@ export type SubItem = {
     content: React.ReactNode;
   };
   
+  export type Task = {
+    _id: string;               
+    content: string;
+    isComplete: "Incomplete" | "Complete" | "InProgress"; 
+    author: string;           
+    priority: "Low" | "Medium" | "High"; 
+    deadline: Date;         
+    subTasks: string[];        
+    createdAt: string;         
+    updatedAt: string;         
+    __v: number;       
+  }

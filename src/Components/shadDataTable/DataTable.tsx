@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LoadScreen from "../Assets/LoadScreen";
-
+import { AddTask } from "./AddTask";
 import {
     ColumnDef,
     flexRender,
@@ -8,7 +8,6 @@ import {
     useReactTable,
   } from "@tanstack/react-table";
    
-
   import {
     Table,
     TableBody,
@@ -18,7 +17,7 @@ import {
     TableRow,
   } from "@/components/ui/table";
    
-
+  
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[],
     data: TData[],
@@ -52,9 +51,11 @@ import {
       
     return (
       <div className="min-h-screen">
-        
+       <div className="flex flex-row-reverse mx-auto p-4">
+       <AddTask />
+        </div> 
   <div className="flex justify-center mt-4 px-4">
-    <div className="w-full max-w-4xl p-4 bg-white shadow-md rounded-md border">
+    <div className="w-full p-4 bg-white shadow-md rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
