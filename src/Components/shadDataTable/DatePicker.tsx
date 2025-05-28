@@ -17,7 +17,7 @@ export function DatePicker({ date, onDateChange }: DatePickerProps) {
   const handleDateSelect = (selectedDate: Date | undefined) => {
     onDateChange?.(selectedDate);
     setShowCalendar(false);
-    console.log(typeof selectedDate);
+   
   };
 
   return (

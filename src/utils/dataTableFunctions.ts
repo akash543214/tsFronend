@@ -2,7 +2,7 @@
 import {editTask } from "../BackendApi/apiService";
 import { deleteTask } from "../BackendApi/apiService";
 
-export const editFunction = async (key: string,value: string,_id:string) => {
+export const editFunction = async (key: string,value: string|Date,_id:string) => {
     try {
       await editTask({ id: _id, fieldToUpdate: { [key]: value } });
     } catch (error) {
@@ -12,12 +12,15 @@ export const editFunction = async (key: string,value: string,_id:string) => {
       
     }
   };
+  
 
     export const handleDelete = async (_id:string) => {
       try {
         await deleteTask(_id);
       } catch (error) {
         console.error("Error deleting task:", error);
-      } 
+      } finally{
+
+      }
     };
   

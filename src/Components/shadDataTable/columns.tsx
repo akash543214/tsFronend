@@ -7,7 +7,7 @@ import Actions from "./Actions"
 import { Task } from "@/types/common";
 
 
-export const columns: ColumnDef<Task>[] = [
+export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -56,7 +56,7 @@ export const columns: ColumnDef<Task>[] = [
 
   {
     id: "actions",
-    cell: ({ row }) => <Actions row={row} />,
+    cell: ({ row }) => <Actions row={row} refreshTable={refreshTable}/>,
 
   },
 ]

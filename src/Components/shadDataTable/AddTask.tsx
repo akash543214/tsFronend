@@ -23,7 +23,11 @@ interface TaskFormData {
   isComplete: string;
 }
 
-export function AddTask() {
+type AddTaskProps = {
+  refreshTable: () => void
+};
+
+export function AddTask({refreshTable}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -53,6 +57,10 @@ export function AddTask() {
       setOpen(false);
     } catch (err) {
       console.error(err);
+    }
+    finally {
+        refreshTable();
+      
     }
   };
 

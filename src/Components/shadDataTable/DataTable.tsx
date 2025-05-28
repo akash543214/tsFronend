@@ -22,12 +22,14 @@ import {
     columns: ColumnDef<TData, TValue>[],
     data: TData[],
     isLoading: boolean,
+    refreshTable: () => void
   }
    
   export default function DataTable<TData, TValue>({
     columns,
     data,
-    isLoading
+    isLoading,
+    refreshTable
   }: DataTableProps<TData, TValue>) {
 
     const [rowSelection, setRowSelection] = useState({})
@@ -52,7 +54,7 @@ import {
     return (
       <div className="min-h-screen">
        <div className="flex flex-row-reverse mx-auto p-4">
-       <AddTask />
+       <AddTask refreshTable = {refreshTable}/>
         </div> 
   <div className="flex justify-center mt-4 px-4">
     <div className="w-full p-4 bg-white shadow-md rounded-md border">
