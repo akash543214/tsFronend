@@ -40,7 +40,7 @@ const DropdownMenu = ({
           <button
             key={subitem.name}
             onClick={subitem.action}
-            className="w-full text-left px-4 py-2 hover:bg-gray-100 focus:outline-none focus:bg-gray-200"
+            className="w-full border-gray-300 text-center px-4 py-2 hover:bg-gray-100 focus:outline-none focus:bg-gray-200"
             role="menuitem"
           >
             {subitem.name}
