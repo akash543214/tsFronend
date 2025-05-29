@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SubItem } from "../../types/common";
+import { ChevronDown } from 'lucide-react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +22,7 @@ export function Dropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{title}</Button>
+        <Button variant="outline">{title} <ChevronDown/></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
