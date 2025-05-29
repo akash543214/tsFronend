@@ -84,12 +84,14 @@ const Header = () => {
           name: "Profile",
           slug: "/profile",
           active: true,
+          shortcut: "⌘P",
           action: handleProfileClick
         },
         {
           name: "Logout",
           slug: "#",
           active: true,
+          shortcut:"⇧⌘Q",
           action: handleLogout
         }
 

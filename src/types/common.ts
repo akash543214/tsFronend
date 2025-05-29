@@ -4,6 +4,7 @@ export type SubItem = {
     name: string;
     slug?: string;
     active?: boolean;
+    shortcut?: string;
     action?: () => void;
   };
   
