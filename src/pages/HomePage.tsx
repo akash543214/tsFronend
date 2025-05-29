@@ -1,9 +1,7 @@
 import DataTable from "@/Components/shadDataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
 import { getTasks } from "@/BackendApi/apiService";
-//import {columns} from '../Components/shadDataTable/columns';
 import { Task } from "@/types/common";
-//import TaskManagerUI from "../Components/TaskManagerUI";
 import { getColumns } from "../Components/shadDataTable/columns";
 
 export default function HomePage()

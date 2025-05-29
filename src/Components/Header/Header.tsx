@@ -128,7 +128,7 @@ const Header = () => {
         )
       )}
 
-      <header className="bg-white shadow" role="banner">
+      <header className="bg-white shadow sticky top-0 z-50 " role="banner">
         <div className="mx-auto px-2 py-2 h-50">
           <nav className="flex justify-between items-center" aria-label="Main Navigation">
             <div className="mr-4">

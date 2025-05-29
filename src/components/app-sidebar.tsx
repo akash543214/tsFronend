@@ -76,7 +76,7 @@ const projects = [
 
 export function AppSidebar() {
   return (
-    <Sidebar >
+    <Sidebar className="my-12">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
