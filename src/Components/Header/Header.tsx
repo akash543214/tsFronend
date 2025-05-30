@@ -1,12 +1,10 @@
 import { useCallback } from 'react';
 import { RootState } from "../../store/store";
-
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../BackendApi/apiService';
 import { logout } from '../../store/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import NavItemComponent from './NavItemComponent';
-
 
 // Memoized NavItem component to prevent unnecessary re-renders
 
@@ -38,7 +36,6 @@ const Header = () => {
    
     navigate('/profile');
   }, [navigate]);
-
 
 
 
@@ -92,7 +89,6 @@ const Header = () => {
   return (
     <>
   
-
       <header className="bg-white shadow sticky top-0 z-50 " role="banner">
         <div className="mx-auto px-2 py-2 h-50">
           <nav className="flex justify-between items-center" aria-label="Main Navigation">

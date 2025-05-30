@@ -37,3 +37,14 @@ export type SubItem = {
     updatedAt: string;         
     __v: number;       
   }
+
+  export type user = {
+    _id: string;
+    name: string;
+    email: string;
+    googleId: string;
+    provider: "google" | "local"; 
+    createdAt: string; 
+    updatedAt: string; 
+    __v: number;
+  }
