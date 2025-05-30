@@ -1,29 +1,18 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { RootState } from "../../store/store";
-import Modal from '../Assets/Modal';
-import Signin from '../Authentication/Signin';
-import Login from '../Authentication/Login';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../BackendApi/apiService';
 import { logout } from '../../store/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import NavItemComponent from './NavItemComponent';
-//import useClickOutside from '../../CustomHooks/useClickOutside';
 
-type ModalType = {
-  id: string;
-  isOpen: boolean;
-  onClose: () => void;
-  content: React.ReactNode;
-};
 
 // Memoized NavItem component to prevent unnecessary re-renders
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [signupModal, setSignupModal] = useState(false);
-  const [loginModal, setLoginModal] = useState(false);
 
   const authStatus = useSelector((state: RootState) => state.auth.status);
   const user = useSelector((state: RootState) => state.auth.userData);
@@ -46,16 +35,12 @@ const Header = () => {
   const handleLoginClick = useCallback(() => setLoginModal(true), []);
   
   const handleProfileClick = useCallback(() => {
-    //setDropdown(false);
+   
     navigate('/profile');
   }, [navigate]);
 
 
-  // Close signup modal handler
-  const closeSignupModal = useCallback(() => setSignupModal(false), []);
-  
-  // Close login modal handler
-  const closeLoginModal = useCallback(() => setLoginModal(false), []);
+
 
   // Create nav items with memoized handlers
   const navItems = [
@@ -102,31 +87,11 @@ const Header = () => {
 
   // Close dropdown when clicking outside
 
-  const modals: ModalType[] = [
-    {
-      id: 'signup',
-      isOpen: signupModal,
-      onClose: closeSignupModal,
-      content: <Signin setSignupModal={setSignupModal} />
-    },
-    {
-      id: 'login',
-      isOpen: loginModal,
-      onClose: closeLoginModal,
-      content: <Login setLoginModal={setLoginModal} />
-    }
-  ];
+
 
   return (
     <>
-      {modals.map(modal =>
-        modal.isOpen && (
-          <Modal key={modal.id} 
-           onClick={modal.onClose}>
-           {modal.content}
-          </Modal>
-        )
-      )}
+  
 
       <header className="bg-white shadow sticky top-0 z-50 " role="banner">
         <div className="mx-auto px-2 py-2 h-50">
