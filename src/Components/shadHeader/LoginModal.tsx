@@ -5,18 +5,39 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { LoginForm } from "../Authentication/ShadcnLogin";
+import { SigninForm } from "../Authentication/ShadcnSignin";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+type formType = "login" | "register";
 
 export function LoginModal() {
+  const [selectedForm, setSelectedForm] = useState<formType>("login");
+
   return (
     <Dialog>
-      {/* Trigger button to open the modal */}
       <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
+        <Button variant="outline">Get started</Button>
       </DialogTrigger>
 
-      {/* Dialog content just wraps your LoginForm */}
       <DialogContent className="sm:max-w-[425px]">
-        <LoginForm />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedForm}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.25 }}
+          >
+            {selectedForm === "login" ? (
+              <LoginForm setSelectedForm={setSelectedForm} />
+            ) : (
+              <SigninForm setSelectedForm={setSelectedForm} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+      
       </DialogContent>
     </Dialog>
   );

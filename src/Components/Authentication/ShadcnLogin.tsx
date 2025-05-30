@@ -20,11 +20,13 @@ type LoginFormData = {
   email: string;
   password: string;
 }
-
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+type LoginFormProps = {
+    setSelectedForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
+    className?: string;
+    props?: React.HTMLAttributes<HTMLDivElement>;
+  };
+  
+  export function LoginForm({ setSelectedForm, className, ...props }: LoginFormProps) {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -89,7 +91,7 @@ export function LoginForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-            Login with your Apple or Google account
+            Login with your Google account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -153,7 +155,7 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <a onClick={()=>setSelectedForm("register")} href="#" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>
