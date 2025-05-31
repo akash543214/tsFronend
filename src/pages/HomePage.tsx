@@ -1,8 +1,8 @@
-import DataTable from "@/Components/shadDataTable/DataTable";
+import DataTable from "@/Components/DataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
 import { getTasks } from "@/BackendApi/apiService";
 import { Task } from "@/types/common";
-import { getColumns } from "../Components/shadDataTable/columns";
+import { getColumns } from "../Components/DataTable/columns";
 
 export default function HomePage()
 {

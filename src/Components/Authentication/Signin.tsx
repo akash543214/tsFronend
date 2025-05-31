@@ -1,168 +1,297 @@
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useState } from "react";
-import { createUser } from "../../BackendApi/apiService";
-import { loginUser } from "../../BackendApi/apiService";
+import { loginUser, googleAuth } from "../../BackendApi/apiService";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
-import LoadingBtn from "../Assets/Loadingbtn";
+import { useForm } from "react-hook-form";
+import { Loader2Icon, AlertCircle } from "lucide-react";
+import { createUser } from "../../BackendApi/apiService";
 
-export default function Signin(_props: { setSignupModal: (arg0: boolean) => void; })
-{
-  const [formData, setFormData] = useState({ name: "", email: "", password: "",confirmPassword:"" }); // Form Data object
+type RegisterFormData = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+type SigninFormProps = {
+  setSelectedForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  className?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+export function SigninForm({ setSelectedForm, className, ...props }: SigninFormProps) {
   const [error, setError] = useState("");
-const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+        
+  const { 
+    register, 
+    handleSubmit, 
+    watch,
+    reset, 
+    formState: { errors }, 
+  } = useForm<RegisterFormData>({ 
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
+  });
 
+  // Watch password field for confirmation validation
+  const password = watch("password");
 
-      // Function to handle Signup
-     const handleSignup = async () => {
+  const handleSignin = async (data: RegisterFormData) => {
+    setError("");
+    setLoading(true);
+    
+    const { name, email, password, confirmPassword } = data;
 
-
-      const { name, email, password,confirmPassword } = formData;
-
-      if (!name || !email || !password || !confirmPassword) {
-        setError("All fields are required");
-        return;
-      }
-      if (password !== confirmPassword) {
-        setError("Passwords do not match");
-        return;
-      }
-      setError("");
-
-      setLoading(true);
-      try {
-        const response = await createUser({name,email,password});
-
-        const res = await loginUser({email,password});
-            if(res.login===false)
-                  setError(response.error);
-                else
-                {
-                 dispatch(login(res.user));
-                 
-                }
-
-     }
-      catch (error) {
-        console.error("Error adding user:", error);
-      } finally{
-        _props.setSignupModal(false);
-        resetForm();
-        setLoading(false);
-      }
+    // Client-side password confirmation check
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
     }
 
-    // Function to handle form change
-    const handleFormChange = (e:{ target: { name: string, value: string } }) => {
+    try {
+      const response = await createUser({ name, email, password });
       
-      const { name, value } = e.target;
-      setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-
-    const resetForm = () => {
-     
-        setFormData({ name: "", email: "", password: "",confirmPassword:""});
+      // Check if user creation was successful
+      if (response.error) {
+        setError(response.error);
+        return;
+      }
       
+      // Auto-login after successful registration
+      const loginResponse = await loginUser({ email, password });
+      
+      if (!loginResponse.login) {
+        setError(loginResponse.error || "Login failed after registration");
+      } else {
+        dispatch(login(loginResponse.user));
+        // Reset form on success
+        reset();
+      }
+    } catch (error: any) {
+      console.error("Error registering user:", error);
+      setError(error.message || "An unexpected error occurred");
+      reset({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
+    } finally {
+      setLoading(false);
     }
-     
-  
-    return (
-        <section>
-          <div className="flex items-center justify-center px-4 py-8 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-            <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-              <h2 className="text-center text-2xl font-bold leading-tight text-black">
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-                Sign up to create account
-              </h2>
-            
-            
-              <form className="mt-8">
-                <div className="space-y-5">
-                  <div>
-                    <label htmlFor="name" className="text-base font-medium text-gray-900">
-                      {' '}
-                      Full Name{' '}
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        onChange={(e) => handleFormChange({ target: { name: 'name', value: e.target.value } })}
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                        type="text"
-                        placeholder="Full Name"
-                        value = {formData.name}
-                    
-                      ></input>
+  }
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    setError("");
     
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="text-base font-medium text-gray-900">
-                      {' '}
-                      Email address{' '}
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        onChange={(e) => handleFormChange({ target: { name: 'email', value: e.target.value } })}
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                        type="email"
-                        placeholder="Email"
-                        value = {formData.email}
-                       
-                      ></input>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="text-base font-medium text-gray-900">
-                        {' '}
-                        Password{' '}
-                      </label>
-                    </div>
-                    <div className="mt-2">
-                      <input
-                           onChange={(e) => handleFormChange({ target: { name: 'password', value: e.target.value } })}
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                        type="password"
-                        placeholder="Password"
-                        value = {formData.password}
-                       
-                      ></input>
-    
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="text-base font-medium text-gray-900">
-                        {' '}
-                        Confirm Password{' '}
-                      </label>
-                    </div>
-                    <div className="mt-2">
-                      <input
-                       onChange={(e) => handleFormChange({ target: { name: 'confirmPassword', value: e.target.value } })}
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                        type="password"
-                        placeholder="Confirm Password"
-                        value = {formData.confirmPassword}
-                       
-                      ></input>
-    
-                    </div>
-                  </div>
-                  <div>
-                  { !loading? <button type="button" onClick={handleSignup} className="inline-flex w-full items-center 
-                    justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7
-                     text-white hover:bg-black/80">
-                      Create Account  
-                    </button>:<LoadingBtn />}
-                  </div>
-                </div>
-              </form>
-            
+    try {
+      const response = await googleAuth();
+      if (response.login === false) {
+        setError(response.error || "Google authentication failed");
+      } else {
+        dispatch(login(response.user));
+      }
+    } catch (error: any) {
+      console.error("Error with Google login:", error);
+      setError(error.message || "Google authentication failed");
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  return (
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {error && (
+        <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+          <AlertCircle className="h-4 w-4" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Create an Account</CardTitle>
+          <CardDescription>
+            Sign up with your Google account or email
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6">
+            {/* Google Sign In Button */}
+            <Button 
+              type="button"
+              onClick={handleGoogleLogin} 
+              variant="outline" 
+              className="w-full"
+              disabled={googleLoading || loading}
+            >
+              {googleLoading ? (
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                    fill="currentColor"
+                  />
+                </svg>
+              )}
+              {googleLoading ? "Signing in..." : "Sign up with Google"}
+            </Button>
+
+            {/* Divider */}
+            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+              <span className="relative z-10 bg-card px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+
+            {/* Registration Form */}
+            <form onSubmit={handleSubmit(handleSignin)} className="grid gap-4">
+              {/* Full Name Field */}
+              <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  {...register("name", { 
+                    required: "Name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Name must be at least 2 characters"
+                    }
+                  })} 
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-600">{errors.name.message}</p>
+                )}  
+              </div>
+
+              {/* Email Field */}
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  {...register("email", { 
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address"
+                    }
+                  })} 
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-600">{errors.email.message}</p>
+                )}  
+              </div>
+
+              {/* Password Field */}
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input  
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  {...register("password", { 
+                    required: "Password is required", 
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters"
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                      message: "Password must contain uppercase, lowercase, number, and special character"
+                    }
+                  })} 
+                />
+                {errors.password && (
+                  <p className="text-sm text-red-600">{errors.password.message}</p>
+                )}  
+              </div>
+
+              {/* Confirm Password Field */}
+              <div className="grid gap-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input  
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                  {...register("confirmPassword", { 
+                    required: "Please confirm your password",
+                    validate: (value) => value === password || "Passwords do not match"
+                  })} 
+                />
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
+                )}  
+              </div>
+
+              {/* Submit Button */}
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading || googleLoading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account...
+                  </>
+                ) : (
+                  "Create Account"
+                )}
+              </Button>
+            </form>
+
+            {/* Login Link */}
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <button 
+                type="button"
+                onClick={() => setSelectedForm("login")} 
+                className="underline underline-offset-4 hover:text-primary"
+                disabled={loading || googleLoading}
+              >
+                Sign in
+              </button>
             </div>
           </div>
-        </section>
-      )
+        </CardContent>
+      </Card>
+
+      {/* Terms and Privacy */}
+      <div className="text-center text-xs text-balance text-muted-foreground">
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline underline-offset-4 hover:text-primary">
+          Terms of Service
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline underline-offset-4 hover:text-primary">
+          Privacy Policy
+        </a>.
+      </div>
+    </div>
+  )
 }

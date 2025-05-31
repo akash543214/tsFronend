@@ -4,8 +4,8 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { LoginForm } from "../Authentication/ShadcnLogin";
-import { SigninForm } from "../Authentication/ShadcnSignin";
+import { LoginForm } from "../Authentication/Login";
+import { SigninForm } from "../Authentication/Signin";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { verifyUserlogin } from '../BackendApi/apiService';
 import { login } from "../store/authSlice.ts";
 import LoadingCircle from './Assets/LoadingCircle.tsx';
-import Header from './shadHeader/Header.tsx';
+import Header from './Header/Header.tsx';
 import './global.css';
 
 function App() {

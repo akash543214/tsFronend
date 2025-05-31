@@ -1,7 +1,4 @@
-import Button from "../Components/Assets/Button";
-import { CheckCircleIcon } from "lucide-react";
-import FeatureCard from '../Components/Assets/Card';
-import Footer from "@/Components/Footer";
+
 
 const LandingPage = () => {
   return (
