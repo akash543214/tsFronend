@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +8,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { user } from "@/types/common";
-
+import { useCallback } from "react";
+import { useNavigate } from 'react-router-dom';
 type ProfileDropdownProps = {
 userData?: user | null;
 handleLogout?: () => void;
@@ -19,13 +18,20 @@ handleLogout?: () => void;
 
 export default function ProfileDropdown({userData,handleLogout}: ProfileDropdownProps)
 {
+  const navigate = useNavigate();
+
+  const handleProfileClick = useCallback(() => {
+   
+    navigate('/profile');
+  }, [navigate]);
+
     const profileItems =  [
       {
         name: "Profile",
         slug: "/profile",
         active: true,
         shortcut: "⌘P",
-        
+        action: handleProfileClick
       },
       {
         name: "Logout",
