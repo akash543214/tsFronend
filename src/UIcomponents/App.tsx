@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { verifyUserlogin } from '../BackendApi/apiService';
+import { verifyUserlogin } from '../BackendApi/apiService.ts';
 import { login } from "../store/authSlice.ts";
 import LoadingCircle from './Assets/LoadingCircle.tsx';
 import Header from './Header/Header.tsx';

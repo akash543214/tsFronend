@@ -1,8 +1,8 @@
-import DataTable from "@/Components/DataTable/DataTable";
+import DataTable from "@/UIcomponents/DataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
 import { getTasks } from "@/BackendApi/apiService";
 import { Task } from "@/types/common";
-import { getColumns } from "../Components/DataTable/columns";
+import { getColumns } from "../UIcomponents/DataTable/columns";
 
 export default function HomePage()
 {

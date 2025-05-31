@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './Components/App.js';
+import App from './UIcomponents/App.js';
 import { store } from './store/store.ts';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import HomePage from './pages/HomePage';
 import UserProfile from './pages/UserProfile';
 import LandingPage from './pages/LandingPage';
-import AuthLayout from './Components/AuthLayout'
+import AuthLayout from './UIcomponents/AuthLayout.tsx'
 
 const router = createBrowserRouter(
 [
