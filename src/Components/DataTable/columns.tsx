@@ -5,7 +5,12 @@ import StatusCell from "./StatusCell"
 import PriorityCell from "./PriorityCell"
 import Actions from "./Actions"
 import { Task } from "@/types/common";
+import { ArrowUpDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
+// Define custom sorting orders
+const priorityOrder = { high: 0, medium: 1, low: 2 };
+const statusOrder = { incomplete: 0, inprogress: 1, completed: 2 };
 
 export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   {
@@ -32,31 +37,89 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   },
   {
     accessorKey: "content",
-    header: "Title",
-    
+    header: "Title"
   },
   {
     accessorKey: "isComplete",
-    header: "Status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => <StatusCell row={row} />,
-  
+    sortingFn: (rowA, rowB, columnId) => {
+      const statusA = rowA.getValue(columnId) as string;
+      const statusB = rowB.getValue(columnId) as string;
+      
+      // Convert boolean isComplete to status string if needed
+      let statusAStr: string;
+      let statusBStr: string;
+      
+      if (typeof statusA === 'boolean') {
+        statusAStr = statusA ? 'completed' : 'incomplete';
+      } else {
+        statusAStr = statusA?.toLowerCase() || 'incomplete';
+      }
+      
+      if (typeof statusB === 'boolean') {
+        statusBStr = statusB ? 'completed' : 'incomplete';
+      } else {
+        statusBStr = statusB?.toLowerCase() || 'incomplete';
+      }
+      
+      const orderA = statusOrder[statusAStr as keyof typeof statusOrder] ?? 999;
+      const orderB = statusOrder[statusBStr as keyof typeof statusOrder] ?? 999;
+      
+      return orderA - orderB;
+    },
   },
-
   {
     accessorKey: "priority",
-    header: "Priority",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Priority
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => <PriorityCell row={row} />,
+    sortingFn: (rowA, rowB, columnId) => {
+      const priorityA = (rowA.getValue(columnId) as string)?.toLowerCase() || 'low';
+      const priorityB = (rowB.getValue(columnId) as string)?.toLowerCase() || 'low';
+      
+      const orderA = priorityOrder[priorityA as keyof typeof priorityOrder] ?? 999;
+      const orderB = priorityOrder[priorityB as keyof typeof priorityOrder] ?? 999;
+      
+      return orderA - orderB;
+    },
   },
   {
     accessorKey: "deadline",
-    header: "Deadline",
-    cell: ({row})=> <DatePicker row={row}/>
-  
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Deadline
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
-
+    cell: ({row})=> <DatePicker row={row}/>
+  },
   {
     id: "actions",
     cell: ({ row }) => <Actions row={row} refreshTable={refreshTable}/>,
-
   },
 ]
