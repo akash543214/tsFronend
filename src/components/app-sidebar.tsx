@@ -4,7 +4,8 @@ import { Calendar,
    MoreHorizontal,
    Plus,
    Search, 
-   Settings
+   Settings,
+   UserRoundCog
    } from "lucide-react"
 
 import {
@@ -26,35 +27,9 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-
+import { useNavigate } from 'react-router-dom';
+import { useCallback } from "react";
 // Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
 
 const projects = [
 
@@ -75,6 +50,56 @@ const projects = [
 ]
 
 export function AppSidebar() {
+    const navigate = useNavigate();
+
+   const handleHomeClick = useCallback(() => {
+     
+      navigate('/home');
+    }, [navigate]);
+    
+    const handleProfileClick = useCallback(() => {
+     
+      navigate('/profile');
+    }, [navigate]);
+    
+
+    const items = [
+      {
+        title: "Home",
+        url: "#",
+        icon: Home,
+        action: handleHomeClick
+      },
+      {
+        title: "Profile",
+        url: "#",
+        icon: UserRoundCog,
+        action: handleProfileClick
+      },
+      {
+        title: "Inbox",
+        url: "#",
+        icon: Inbox,
+      },
+      {
+        title: "Calendar",
+        url: "#",
+        icon: Calendar,
+      },
+      {
+        title: "Search",
+        url: "#",
+        icon: Search,
+      },
+      {
+        title: "Settings",
+        url: "#",
+        icon: Settings,
+      }
+      
+    ]
+    
+    
   return (
     <Sidebar className="my-12">
       <SidebarContent>
@@ -86,10 +111,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <button onClick={item.action}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
