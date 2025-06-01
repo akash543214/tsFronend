@@ -16,27 +16,79 @@ import { useState } from "react";
 import { updateUser, updatePassword } from "../BackendApi/apiService";
 import { updateUserData } from "../store/authSlice";
 import { AppDispatch } from "../store/store"; // Import AppDispatch if available
+import { user } from "../types/common";
+import { useForm } from "react-hook-form";
 
-interface UserData {
-  _id: string;
+
+type RegisterFormData = {
   name: string;
   email: string;
-  googleId: string;
-  provider: "google" | "local";
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  password: string;
+  oldpassword:string;
+  confirmPassword: string;
 }
 
+ // Adjust the import path as necessary
 export default function UserProfile() {
 
 
   const [editing, setEditing] = useState(false)
 
+
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth.userData);
+
+      const [error, setError] = useState("");
+
   const handleSave = () => {
    // setUser(formData)
     setEditing(false)
+    
   }
+
+
+  const handleUpdatePassword = async () => {
+    setError("");
+   
+    try {
+      const res = await updatePassword({
+        fieldToUpdate: { password, oldPassword },
+      });
+
+      if (res.acknowledged === false) {
+        setError(res.error);
+      } else {
+        setError("Password updated successfully");
+       
+      }
+    } catch (err) {
+      console.error("Error updating password:", err);
+      setError("Something went wrong while updating password");
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      const res = await updateUser({
+        fieldToUpdate: {
+          name: formData.name,
+          email: formData.email,
+        },
+      });
+
+      if (res.acknowledged) {
+        const newUser: user = {
+          ...user,
+          name: formData.name,
+          email: formData.email,
+        };
+        dispatch(updateUserData(newUser));
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setError("Error updating profile");
+    }
+  };
 
   return (
     <div className="w-full mx-auto py-12 px-4 lg:w-1/2">
@@ -54,8 +106,7 @@ export default function UserProfile() {
               id="username"
               name="username"
               disabled={!editing}
-             
-              
+                      
             />
           </div>
 
@@ -65,8 +116,7 @@ export default function UserProfile() {
               id="email"
               name="email"
               disabled={!editing}
-             
-              
+                        
             />
           </div>
 
@@ -77,15 +127,15 @@ export default function UserProfile() {
               name="password"
               type="password"
               disabled={!editing}
-             
-              
+                      
             />
           </div>
 
           <div className="grid gap-3">
             <Label>Account Created</Label>
             <Input
-            
+             value={user?.createdAt ? format(user.createdAt, "PPpp") : ""}
+
               disabled
             />
           </div>

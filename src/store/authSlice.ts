@@ -6,8 +6,8 @@ interface UserData {
   email: string;
   googleId: string;
   provider: "google" | "local"; // Adjust if you support more providers
-  createdAt: string; // ISO timestamp
-  updatedAt: string; // ISO timestamp
+  createdAt: Date; // ISO timestamp
+  updatedAt: Date; // ISO timestamp
   __v: number;
 }
 
