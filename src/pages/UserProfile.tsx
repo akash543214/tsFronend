@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,29 +10,31 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { User } from "lucide-react";
-interface User {
-  username: string
-  email: string
-  password: string
-  createdAt: Date
-  imageUrl?: string
+import { RootState } from "../store/store"; 
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { updateUser, updatePassword } from "../BackendApi/apiService";
+import { updateUserData } from "../store/authSlice";
+import { AppDispatch } from "../store/store"; // Import AppDispatch if available
+
+interface UserData {
+  _id: string;
+  name: string;
+  email: string;
+  googleId: string;
+  provider: "google" | "local";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export default function UserProfile() {
 
-  const [user, setUser] = useState<User>({
-    username: "peduarte",
-    email: "pedro@shadcn.io",
-    password: "supersecure123",
-    createdAt: new Date("2023-01-15T10:30:00"),
-    imageUrl: "", 
-  })
 
   const [editing, setEditing] = useState(false)
-  const [formData, setFormData] = useState(user)
 
   const handleSave = () => {
-    setUser(formData)
+   // setUser(formData)
     setEditing(false)
   }
 
@@ -53,7 +54,7 @@ export default function UserProfile() {
               id="username"
               name="username"
               disabled={!editing}
-              value={formData.username}
+             
               
             />
           </div>
@@ -64,7 +65,7 @@ export default function UserProfile() {
               id="email"
               name="email"
               disabled={!editing}
-              value={formData.email}
+             
               
             />
           </div>
@@ -76,7 +77,7 @@ export default function UserProfile() {
               name="password"
               type="password"
               disabled={!editing}
-              value={formData.password}
+             
               
             />
           </div>
@@ -84,7 +85,7 @@ export default function UserProfile() {
           <div className="grid gap-3">
             <Label>Account Created</Label>
             <Input
-              value={format(user.createdAt, "PPpp")}
+            
               disabled
             />
           </div>
@@ -96,7 +97,7 @@ export default function UserProfile() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setFormData(user)
+                    //setFormData(user)
                     setEditing(false)
                   }}
                 >
