@@ -1,15 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface UserData {
-  _id: string;
-  name: string;
-  email: string;
-  googleId: string;
-  provider: "google" | "local"; // Adjust if you support more providers
-  createdAt: Date; // ISO timestamp
-  updatedAt: Date; // ISO timestamp
-  __v: number;
-}
+import { UserData } from "../types/common"; // Adjust the import path as necessary
 
 interface AuthState {
   status: boolean;

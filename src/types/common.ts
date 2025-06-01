@@ -38,13 +38,13 @@ export type SubItem = {
     __v: number;       
   }
 
-  export type user = {
+  export type UserData = {
     _id: string;
     name: string;
     email: string;
     googleId: string;
     provider: "google" | "local"; 
-    createdAt: string; 
-    updatedAt: string; 
+    createdAt: Date; 
+    updatedAt: Date; 
     __v: number;
   }
