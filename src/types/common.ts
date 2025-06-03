@@ -33,8 +33,8 @@ export type SubItem = {
     priority: "Low" | "Medium" | "High"; 
     deadline: Date;         
     subTasks: string[];        
-    createdAt: string;         
-    updatedAt: string;         
+    createdAt: Date;         
+    updatedAt: Date;         
     __v: number;       
   }
 
