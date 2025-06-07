@@ -18,20 +18,25 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table";
-   
+
+  type ViewType = 'table' | 'kanban';
+
   import { TaskSheet } from "../TaskSheet";
+import { Button } from "@/components/ui/button";
   interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[],
     data: TData[],
     isLoading: boolean,
-    refreshTable: () => void
+    refreshTable: () => void,
+    setView: React.Dispatch<React.SetStateAction<ViewType>>;
   }
    
   export default function DataTable<TData, TValue>({
     columns,
     data,
     isLoading,
-    refreshTable
+    refreshTable,
+    setView
   }: DataTableProps<TData, TValue>) {
 
     const [rowSelection, setRowSelection] = useState({})
@@ -62,8 +67,15 @@ import {
       
     return (
       <div className="min-h-screen">
+        <div className="mx-8 mt-6">
+            <Button variant={"outline"} 
+        onClick={()=>setView("kanban")}>Kanban Board
+        </Button>
+        </div>
        <div className="flex flex-row-reverse mx-auto p-4">
+        
         <AddTask refreshTable = {refreshTable}/>
+    
 
         <TaskSheet open={open} setOpen={setOpen}/>
 

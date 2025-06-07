@@ -28,7 +28,11 @@ export default function StatusCell({ row }: { row: any }) {
     const [status, setStatus] = useState(row.getValue("isComplete") as Task["isComplete"]);
   
     const handleStatusChange = (newStatus: Task["isComplete"]) => {
-      editFunction("isComplete", newStatus, row.original._id);
+      editFunction({
+        key: "isComplete",
+        value: newStatus,
+        _id: row.original._id
+      });
       setStatus(newStatus);
     };
   

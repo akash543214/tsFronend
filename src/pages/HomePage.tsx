@@ -35,12 +35,13 @@ export default function HomePage()
 
     return (
       view === 'kanban' ?
-      <KanbanBoard data={taskData}/> :
+      <KanbanBoard data={taskData} isLoading={isLoading} setView={setView}/> :
         <DataTable 
          columns={columns}  
          data={taskData} 
          isLoading={isLoading}
          refreshTable = {getTasksData}
+          setView={setView}
          />  
     );
 }
