@@ -4,9 +4,8 @@ import { getTasks } from "@/BackendApi/apiService";
 import { Task } from "@/types/common";
 import { getColumns } from "../UIcomponents/DataTable/columns";
 import KanbanBoard from "@/UIcomponents/KanbanBoard/KanbanBoard";
+import { ViewType } from "@/types/common";
 
-
-type ViewType = 'table' | 'kanban';
 
 export default function HomePage()
 {
@@ -16,6 +15,7 @@ export default function HomePage()
 
 
      const getTasksData = useCallback(async () => {  
+      setIsLoading(true);
       try {
         const response = await getTasks();
         setTaskData(response);
@@ -29,7 +29,7 @@ export default function HomePage()
     useEffect(()=>{
         getTasksData();
   
-    },[getTasksData]);
+    },[getTasksData,view,setView]);
    
     const columns = getColumns(getTasksData); // pass refresh function here
 

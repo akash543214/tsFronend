@@ -18,8 +18,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table";
-
-  type ViewType = 'table' | 'kanban';
+import { ViewType } from "@/types/common";
 
   import { TaskSheet } from "../TaskSheet";
 import { Button } from "@/components/ui/button";
@@ -77,7 +76,7 @@ import { Button } from "@/components/ui/button";
         <AddTask refreshTable = {refreshTable}/>
     
 
-        <TaskSheet open={open} setOpen={setOpen}/>
+        <TaskSheet />
 
         </div> 
         <div className="flex justify-center mt-4 px-4">

@@ -5,7 +5,7 @@ import Column from "./Column";
 import TaskCard from "./TaskCard";
 import LoadScreen from "../Assets/LoadScreen";
 import { Button } from "@/components/ui/button";
-  type ViewType = 'table' | 'kanban';
+import { ViewType } from "@/types/common";
 
 interface KanbanBoardProps { 
     data: Task[];

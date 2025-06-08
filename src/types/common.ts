@@ -49,3 +49,6 @@ export type SubItem = {
     __v: number;
   }
   export type TaskStatus = Task['isComplete'];
+
+
+  export type ViewType = 'table' | 'kanban';

@@ -78,7 +78,7 @@ export function useKanbanDragDrop(
   }, [columns]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
-    console.log("🚀 DRAG START");
+    //console.log("🚀 DRAG START");
     const task = tasks.find(t => t._id === event.active.id);
     setActiveTask(task || null);
     
@@ -86,7 +86,7 @@ export function useKanbanDragDrop(
     const activeColumn = findTaskColumn(event.active.id as string);
     setOriginalColumn(activeColumn || null);
     
-    console.log("Original column:", activeColumn?.title);
+  //  console.log("Original column:", activeColumn?.title);
   }, [tasks, findTaskColumn]);
 
   const handleDragOver = useCallback((event: DragOverEvent) => {
@@ -115,7 +115,7 @@ export function useKanbanDragDrop(
 
     if (!activeColumn || !overColumn || activeColumn.id === overColumn.id) return;
 
-    console.log(`✅ Moving from ${activeColumn.title} to ${overColumn.title}`);
+  //  console.log(`✅ Moving from ${activeColumn.title} to ${overColumn.title}`);
 
     setTasks(prev => prev.map(task => 
       task._id === activeId 
@@ -127,7 +127,7 @@ export function useKanbanDragDrop(
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     
-    console.log("🏁 DRAG END");
+   // console.log("🏁 DRAG END");
     
     setActiveTask(null);
     if (!over) {
@@ -157,12 +157,12 @@ export function useKanbanDragDrop(
       return;
     }
 
-    console.log("Final active column:", activeColumn.title);
-    console.log("Final over column:", overColumn.title);
+    //console.log("Final active column:", activeColumn.title);
+   // console.log("Final over column:", overColumn.title);
 
     if (activeColumn.id !== overColumn.id) {
       // Moving to a different column
-      console.log(`🎯 FINAL MOVE from ${activeColumn.title} to ${overColumn.title}`);
+     // console.log(`🎯 FINAL MOVE from ${activeColumn.title} to ${overColumn.title}`);
       
       editFunction({
         key: "isComplete",
@@ -171,7 +171,7 @@ export function useKanbanDragDrop(
       });
     } else {
       // Reordering within the same column
-      console.log("🔄 Reordering within same column");
+     // console.log("🔄 Reordering within same column");
       const columnTasks = activeColumn.tasks;
       const activeIndex = columnTasks.findIndex(task => task._id === activeId);
       const overIndex = columnTasks.findIndex(task => task._id === overId);

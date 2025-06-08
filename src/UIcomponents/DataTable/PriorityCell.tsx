@@ -38,7 +38,10 @@ const priorityOptions = [
   };
 
     const handlePriorityChange = (newPriority: Task["priority"]) => {
-      editFunction("priority", newPriority, row.original._id);
+
+      editFunction({key:"priority", 
+        value:newPriority,
+        _id: row.original._id});
       setPriority(newPriority);
     };
   
