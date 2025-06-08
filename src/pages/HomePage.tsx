@@ -6,6 +6,57 @@ import { getColumns } from "../UIcomponents/DataTable/columns";
 import KanbanBoard from "@/UIcomponents/KanbanBoard/KanbanBoard";
 import { ViewType } from "@/types/common";
 
+const mock:Task[] = [
+  {
+    _id: "1",
+    content: "Design project dashboard",
+    isComplete: "InProgress",
+    author: "Akash Sharma",
+    priority: "High",
+    deadline: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    __v: 0,
+    subTasks: [
+      {
+        _id: "1-1",
+        content: "Create wireframes",
+        isComplete: "Complete",
+        author: "Akansha",
+        priority: "Medium",
+        deadline: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        __v: 0,
+        subTasks: [   {
+        _id: "1-1-1",
+        content: "Create git",
+        isComplete: "Complete",
+        author: "Akansha",
+        priority: "Medium",
+        deadline: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        __v: 0,
+        subTasks: [ ]
+      }]
+      },
+     
+    ]
+  },
+  {
+    _id: "2",
+    content: "Setup CI/CD pipeline",
+    isComplete: "Incomplete",
+    author: "DevOps Bot",
+    priority: "Medium",
+    deadline: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    __v: 0,
+    subTasks: []
+  }
+]
 
 export default function HomePage()
 {
@@ -17,8 +68,9 @@ export default function HomePage()
      const getTasksData = useCallback(async () => {  
       setIsLoading(true);
       try {
-        const response = await getTasks();
-        setTaskData(response);
+       // const response = await getTasks();
+        setTaskData(mock);
+
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally{

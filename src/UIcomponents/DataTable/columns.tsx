@@ -5,7 +5,7 @@ import StatusCell from "./StatusCell"
 import PriorityCell from "./PriorityCell"
 import Actions from "./Actions"
 import { Task } from "@/types/common";
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Define custom sorting orders
@@ -13,6 +13,55 @@ const priorityOrder = { high: 0, medium: 1, low: 2 };
 const statusOrder = { incomplete: 0, inprogress: 1, completed: 2 };
 
 export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
+  {
+    id: "expander",
+    header: "",
+    cell: ({ row }) => {
+      const hasSubtasks = row.original.subTasks && row.original.subTasks.length > 0;
+      const canExpand = row.getCanExpand();
+     
+      return (
+        <div className="flex items-center space-x-2">
+          {canExpand && hasSubtasks ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={row.getToggleExpandedHandler()}
+              className="h-8 w-8 p-0"
+            >
+              {row.getIsExpanded() ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </Button>
+          ) : (
+            <div className="w-8" />
+          )}
+          
+          {/* Add subtask button - only show for main tasks and first level subtasks */}
+          {row.depth < 2 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+              onClick={() => {
+                // You'll need to implement this function
+                console.log('Add subtask to:', row.original._id);
+                // addSubtask(row.original.id);
+              }}
+              title="Add subtask"
+            >
+              <Plus className="h-3 w-3" />
+            </Button>
+          )}
+        </div>
+      );
+    },
+    size: 80,
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     id: "select",
     header: ({ table }) => (
@@ -37,7 +86,24 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   },
   {
     accessorKey: "content",
-    header: "Title"
+    header: "Title",
+    cell: ({ row }) => {
+      const content = row.getValue("content") as string;
+      const depth = row.depth;
+      
+      return (
+        <div className="flex items-center">
+          {depth > 0 && (
+            <span className="text-gray-400 mr-2">
+              {depth === 1 ? "├─" : "└─"}
+            </span>
+          )}
+          <span className={depth > 0 ? "font-medium" : "font-semibold"}>
+            {content}
+          </span>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "isComplete",

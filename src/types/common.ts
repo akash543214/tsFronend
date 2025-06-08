@@ -32,7 +32,7 @@ export type SubItem = {
     author: string;           
     priority: "Low" | "Medium" | "High"; 
     deadline: Date;         
-    subTasks: string[];        
+    subTasks: Task[];        
     createdAt: Date;         
     updatedAt: Date;         
     __v: number;       
