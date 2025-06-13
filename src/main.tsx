@@ -8,6 +8,8 @@ import HomePage from './pages/HomePage';
 import UserProfile from './pages/UserProfile';
 import LandingPage from './pages/LandingPage';
 import AuthLayout from './UIcomponents/AuthLayout.tsx'
+import TaskPage from './pages/TaskPage.tsx';
+
 
 const router = createBrowserRouter(
 [
@@ -28,6 +30,14 @@ const router = createBrowserRouter(
             element: (
                 <AuthLayout authentication={true}>
                     <HomePage />
+                </AuthLayout>
+            ),
+        },  
+        {
+            path: "/task/:id",
+            element: (
+                <AuthLayout authentication={true}>
+                    <TaskPage />
                 </AuthLayout>
             ),
         },   

@@ -17,7 +17,7 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
     id: "expander",
     header: "",
     cell: ({ row }) => {
-      const hasSubtasks = row.original.subTasks && row.original.subTasks.length > 0;
+      const hasSubtasks = row.original.subtasks && row.original.subtasks.length > 0;
       const canExpand = row.getCanExpand();
      
       return (
@@ -47,7 +47,7 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
               className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
               onClick={() => {
                 // You'll need to implement this function
-                console.log('Add subtask to:', row.original._id);
+                console.log('Add subtask to:', row.original.id);
                 // addSubtask(row.original.id);
               }}
               title="Add subtask"
@@ -85,10 +85,10 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
     enableHiding: false,
   },
   {
-    accessorKey: "content",
+    accessorKey: "title",
     header: "Title",
     cell: ({ row }) => {
-      const content = row.getValue("content") as string;
+      const title = row.getValue("title") as string;
       const depth = row.depth;
       
       return (
@@ -99,14 +99,14 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
             </span>
           )}
           <span className={depth > 0 ? "font-medium" : "font-semibold"}>
-            {content}
+            {title}
           </span>
         </div>
       );
     }
   },
   {
-    accessorKey: "isComplete",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button

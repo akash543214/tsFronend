@@ -61,7 +61,7 @@ export default function KanbanBoard({ data, isLoading,setView }: KanbanBoardProp
                     {activeTask && (
                         <div className="rotate-2 scale-105 shadow-xl">
                             <TaskCard 
-                                taskId={activeTask._id}
+                                taskId={activeTask.id}
                                 taskTitle={activeTask.content}
                             />
                         </div>

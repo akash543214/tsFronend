@@ -25,6 +25,8 @@ export type SubItem = {
     content: React.ReactNode;
   };
   
+
+  /*
   export type Task = {
     _id: string;               
     content: string;
@@ -48,7 +50,60 @@ export type SubItem = {
     updatedAt: Date; 
     __v: number;
   }
-  export type TaskStatus = Task['isComplete'];
+
+  */
 
 
+
+
+export enum TaskStatus {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED"
+}
+
+export enum TaskPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  URGENT = "URGENT"
+}
+
+enum AuthProvider {
+  LOCAL = "local",
+  GOOGLE = "google"
+}
+
+export type Task = {
+  id: number;
+  title: string;
+  content: string;
+  project_id: number;
+  owner_id: number;
+  parent_task_id?: number | null;
+  assignee_id?: number | null;
+  status: TaskStatus;
+  priority: TaskPriority;
+  deadline: Date;
+  created_at: Date;
+  subtasks?: Task[];
+};
+
+export type UserData = {
+  id: number;
+  name: string;
+  email: string;
+  created_at: Date;
+  provider: AuthProvider;
+  googleId: string | null; 
+};
+
+export type projectData = {
+  id:number,
+  title:string,
+  description:  String,
+  user_id:    number,
+  created_at:  Date
+}
+  export type TaskStatusType = Task['status'];
   export type ViewType = 'table' | 'kanban';

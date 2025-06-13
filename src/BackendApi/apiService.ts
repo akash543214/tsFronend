@@ -1,38 +1,52 @@
 // apiService.js
 const BASE_URL = import.meta.env.VITE_API_URL;
+//import { Task } from "@/types/common";
 
-const handleResponse = async (response: Response) => {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
-  }
-  return response.json();
-};
+import axios from 'axios';
 
-export const addTask = async (Task: { content: string; 
-  priority: string; 
-  deadline: Date; 
-  isComplete: string; }) => {
+// Configure axios instance with default settings
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true, // equivalent to credentials: "include"
+});
 
-const {content,priority,deadline,isComplete} = Task;
-  
+export const addTask = async (task: any) => {
   try {
-    const response = await fetch(`${BASE_URL}/addtask`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content,priority,deadline,isComplete }),
-    });
-    return handleResponse(response);
+    const response = await axiosInstance.post('/addtask', task);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error adding user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
 };
 
-export const editTask = async (updateObj: { id: string; 
+export const getProjects = async () => {
+  try {
+    const response = await axiosInstance.get('/project/get-projects');
+    return response.data; // axios automatically parses JSON
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
+    throw error;
+  }
+};
+
+
+export const editTask = async (updateObj: { id: number; 
   fieldToUpdate: any; }) => {
-    
+  /*  
   const { id, fieldToUpdate } = updateObj;
 
   if (!id || !fieldToUpdate) {
@@ -52,22 +66,29 @@ export const editTask = async (updateObj: { id: string;
   } catch (error) {
     console.error("Error editing task:", error);
     throw error;
-  }
+  }*/
 };
 
-export const getTasks = async () => {
-  
-  try {
-    const response = await fetch(`${BASE_URL}/get-tasks`,{
-      credentials: "include"
-    });
-    return handleResponse(response);
+export const getTasks = async (projectId:number) => {
+
+   try {
+    const response = await axiosInstance.get(`/task/top-level-tasks/${projectId}`);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error getting users:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
 };
-export const deleteTask = async (id:string) => {
+
+
+export const deleteTask = async (id:number) => {
+
+  /*
   try {
     const response = await fetch(`${BASE_URL}/removetask?id=${id}`, {
       method: "DELETE",
@@ -78,10 +99,11 @@ export const deleteTask = async (id:string) => {
     console.error("Error deleting user:", error);
     throw error;
   }
+    */
 };
 
 export const createUser = async (User: { name: string; email: string; password: string; }) => {
-
+/*
   const {name,email,password} = User;
   try {
     const response = await fetch(`${BASE_URL}/signin`, {
@@ -94,9 +116,12 @@ export const createUser = async (User: { name: string; email: string; password: 
     console.error("Error getting users:", error);
     throw error;
   }
+    */
 };
 
 export const deleteUser = async () => {
+
+  /*
   try {
     const response = await fetch(`${BASE_URL}/remove`, {
       method: "DELETE",
@@ -106,64 +131,63 @@ export const deleteUser = async () => {
     console.error("Error deleting user:", error);
     throw error;
   }
+    */
 };
 
 
 export const loginUser = async(User: { email: string;
    password: string; })=>{
 
-  const {email,password} = User;
-  try {
-    const response = await fetch(`${BASE_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({email,password }),
-    });
-   
-  return await response.json();
-   
+ try {
+    const response = await axiosInstance.post('/login-user', User);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error login user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
-
 }
 
 export const verifyUserlogin = async()=>{
 
-  try {
-    const response = await fetch(`${BASE_URL}/verify-login`, {
-      method: "POST",
-      credentials: "include",
-    });
-   
-  return await response.json();
-   
+try {
+    const response = await axiosInstance.post('/verify-login');
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error login user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
-
 }
+
 export const logoutUser = async()=>{
 
-  try {
-    const response = await fetch(`${BASE_URL}/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    return handleResponse(response);
+   try {
+    const response = await axiosInstance.post('/logout-user');
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error deleting user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
 }
 
 
 export const updateUser = async (updateObj: { fieldToUpdate: any; }) => {
-  const { fieldToUpdate } = updateObj;
-
+ // const { fieldToUpdate } = updateObj;
+/*
   if (!fieldToUpdate) {
     console.error("Invalid update object:", updateObj);
     return;
@@ -182,6 +206,7 @@ export const updateUser = async (updateObj: { fieldToUpdate: any; }) => {
     console.error("Error updating user:", error);
     throw error;
   }
+    */
 };
 
 export const updatePassword = async (updateObj: { fieldToUpdate: any; }) => {

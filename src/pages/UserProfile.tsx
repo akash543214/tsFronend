@@ -26,7 +26,7 @@ const UserProfile = () => {
             <label className="text-gray-600">Account Created</label>
             <input
               type="text"
-              value={user?.createdAt ? format(user.createdAt, "PPpp") : ""}
+              value={user?.created_at ? format(user.created_at, "PPpp") : ""}
               disabled
               className="mt-1 w-full p-2 border rounded-lg bg-gray-200"
             />

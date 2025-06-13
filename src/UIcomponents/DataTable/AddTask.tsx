@@ -15,12 +15,13 @@ import { SelectPriority } from "./SelectPriority";
 import { DatePicker } from "./DatePicker";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
-
+import { TaskStatus } from "@/types/common";
+import { TaskPriority } from "@/types/common";
 interface TaskFormData {
-  content: string;
-  priority: string;
+  title: string;
+  priority: TaskPriority;
   deadline: Date;
-  isComplete: string;
+  status: TaskStatus;
 }
 
 type AddTaskProps = {
@@ -38,10 +39,10 @@ export function AddTask({refreshTable}: AddTaskProps) {
     formState: { errors }, 
   } = useForm<TaskFormData>({
     defaultValues: {
-      content: "",
-      priority: "",
+      title: "",
+      priority: TaskPriority.MEDIUM,
       deadline: new Date(),
-      isComplete: "false"
+      status: TaskStatus.PENDING
     }
   });
 
@@ -49,10 +50,10 @@ export function AddTask({refreshTable}: AddTaskProps) {
     try {
       await addTask(data);
       reset({
-        content: "",
-        priority: "",
-        deadline: new Date(),
-        isComplete: "false"
+       title: "",
+      priority: TaskPriority.MEDIUM,
+      deadline: new Date(),
+      status: TaskStatus.PENDING
       });
       setOpen(false);
     } catch (err) {
@@ -68,10 +69,10 @@ export function AddTask({refreshTable}: AddTaskProps) {
     setOpen(newOpen);
     if (!newOpen) {
       reset({
-        content: "",
-        priority: "",
-        deadline: new Date(),
-        isComplete: "false"
+       title: "",
+      priority: TaskPriority.MEDIUM,
+      deadline: new Date(),
+      status: TaskStatus.PENDING
       });
     }
   };
@@ -93,16 +94,16 @@ export function AddTask({refreshTable}: AddTaskProps) {
           <div className="grid gap-4 py-4">
             {/* Title Field */}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="content" className="text-right">
+              <Label htmlFor="title" className="text-right">
                 Title
               </Label>
               <div className="col-span-3 flex flex-col">
                 <Input 
-                  id="content"
-                  {...register("content", { required: "Title is required" })} 
+                  id="title"
+                  {...register("title", { required: "Title is required" })} 
                 />
-                {errors.content && (
-                  <p className="text-sm text-red-600 mt-1">{errors.content.message}</p>
+                {errors.title && (
+                  <p className="text-sm text-red-600 mt-1">{errors.title.message}</p>
                 )}  
               </div>
             </div>

@@ -13,6 +13,7 @@ interface AuthLayoutProps {
 }
 
 export default function AuthLayout({ children, authentication = true }: AuthLayoutProps) {
+    
         const navigate = useNavigate();
     const [loader, setLoader] = useState(true);
     const authStatus = useSelector((state:RootState) => state.auth.status);

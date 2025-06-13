@@ -9,16 +9,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { Task } from "@/types/common";
 
   type ActionsProps = {
     row: {
-      original: {
-        _id: string;
-        content: string;
-        priority: string;
-        deadline: Date;
-        isComplete: string;
-      };
+      original: Task;
     },
    refreshTable: () => void
   };
@@ -28,9 +23,9 @@ export default function Actions({ row,refreshTable }:ActionsProps )
     const task = row.original;
       //console.log("Rendering actions for", row.original);
 
-     const handleDelete = async (_id:string) => {
+     const handleDelete = async (id:number) => {
       try {
-        await deleteTask(_id);
+        await deleteTask(id);
       } catch (error) {
         console.error("Error deleting task:", error);
       } finally{
@@ -46,14 +41,12 @@ export default function Actions({ row,refreshTable }:ActionsProps )
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(task._id)}
-            >
+            <DropdownMenuItem>
               Duplicate
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem 
-              onClick={()=> handleDelete(task._id)}> 
+              onClick={()=> handleDelete(task.id)}> 
               Delete
               </DropdownMenuItem>
           </DropdownMenuContent>

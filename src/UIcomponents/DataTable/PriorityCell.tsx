@@ -10,28 +10,31 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { editFunction } from "@/utils/dataTableFunctions";
-
+import { TaskPriority } from "@/types/common";
 
 export default function PriorityCell({ row }: { row: any }) {
     const [priority, setPriority] = useState(row.getValue("priority") as Task["priority"]);
   
 // Priority options
 const priorityOptions = [
-    { value: "Low", label: "Low" },
-    { value: "Medium", label: "Medium" },
-    { value: "High", label: "High" }
+    { value: TaskPriority.LOW, label: "Low" },
+    { value: TaskPriority.MEDIUM, label: "Medium" },
+    { value: TaskPriority.HIGH, label: "High" },
+    { value: TaskPriority.URGENT, label: "Urgent" }
   ] as const;
   
   
   // Priority badge variant mapping
   const getPriorityVariant = (priority: Task["priority"]) => {
     switch (priority) {
-      case "High":
+      case TaskPriority.HIGH:
         return "destructive";
-      case "Medium":
+      case TaskPriority.MEDIUM:
         return "secondary";
-      case "Low":
+      case TaskPriority.LOW:
         return "outline";
+         case TaskPriority.URGENT:
+        return "destructive";
       default:
         return "outline";
     }
@@ -41,7 +44,7 @@ const priorityOptions = [
 
       editFunction({key:"priority", 
         value:newPriority,
-        _id: row.original._id});
+        id: row.original.id});
       setPriority(newPriority);
     };
   

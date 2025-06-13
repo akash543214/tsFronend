@@ -7,18 +7,17 @@ type valueType = string | Date;
 type editFunctionProps = {
   key:string,
   value:valueType,
-  _id:string
+  id:number
 }
-
 
 export const editFunction = async ({key,
   value,
-  _id}:editFunctionProps) => {
+  id}:editFunctionProps) => {
   
-  console.log(key, value, _id);
+  console.log(key, value, id);
 
   try {
-   const res= await editTask({ id: _id, fieldToUpdate: { [key]: value } });
+   const res= await editTask({ id: id, fieldToUpdate: { [key]: value } });
    console.log(res);
   } catch (error) {
     console.error("Error editing task:", error);
@@ -28,9 +27,9 @@ export const editFunction = async ({key,
 };
   
 
-    export const handleDelete = async (_id:string) => {
+    export const handleDelete = async (id:number) => {
       try {
-        await deleteTask(_id);
+        await deleteTask(id);
       } catch (error) {
         console.error("Error deleting task:", error);
       } finally{

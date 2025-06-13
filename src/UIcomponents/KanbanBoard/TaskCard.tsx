@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 interface TaskCardProps {
     taskTitle: string;
-    taskId: string;
+    taskId: number;
 }
 
 function TaskCard({ taskTitle, taskId }: TaskCardProps) {

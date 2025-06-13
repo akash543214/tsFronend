@@ -5,7 +5,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 interface ColumnProps {
-    id: string;
+    id: number;
     title: string;
     tasks: Task[];
 }
@@ -16,7 +16,7 @@ function Column({ id, title, tasks }: ColumnProps) {
         data: { type: 'column', accepts: ['task'] }
     });
 
-    const taskIds = React.useMemo(() => tasks.map(task => task._id), [tasks]);
+    const taskIds = React.useMemo(() => tasks.map(task => task.id), [tasks]);
 
     return (
         <div 
@@ -36,8 +36,8 @@ function Column({ id, title, tasks }: ColumnProps) {
                 <div className="space-y-3">
                     {tasks.map(task => (
                         <TaskCard 
-                            key={task._id} 
-                            taskId={task._id}
+                            key={task.id} 
+                            taskId={task.id}
                             taskTitle={task.content} 
                         /> 
                     ))}

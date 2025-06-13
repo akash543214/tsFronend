@@ -30,7 +30,11 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from "react";
 // Menu items.
-
+import { useState } from "react";
+import { projectData } from "@/types/common";
+import { useEffect } from "react";
+import { getProjects } from "@/BackendApi/apiService";
+/*
 const projects = [
 
   {
@@ -48,10 +52,11 @@ const projects = [
     url: "#",
   },
 ]
-
+*/
 export function AppSidebar() {
     const navigate = useNavigate();
-
+     
+      
    const handleHomeClick = useCallback(() => {
      
       navigate('/home');
@@ -62,7 +67,24 @@ export function AppSidebar() {
       navigate('/profile');
     }, [navigate]);
     
+      const [projects, setProjects] = useState<projectData[]>([]);
 
+         const fetchProjects = useCallback(async () => {  
+              try {
+                const response = await getProjects();
+             //   console.log(response.data)
+                
+                 setProjects(response.data);
+              } catch (error) {
+                console.error("Error fetching tasks:", error);
+              } 
+            }, []);
+          
+            useEffect(()=>{
+                fetchProjects();
+          
+            },[]);
+           
     const items = [
       {
         title: "Home",
@@ -129,12 +151,13 @@ export function AppSidebar() {
       <SidebarGroupContent>
         <SidebarMenu>
           {projects.map((project) => (
-            <SidebarMenuItem key={project.name}>
+            <SidebarMenuItem key={project.id}>
               <SidebarMenuButton asChild>
-                <a href={project.url}>
-                  <span>{project.name}</span>
-                </a>
-
+                  <span className="cursor-pointer"
+                     onClick={()=>navigate(`/task/${project.id}`)}>
+                    {project.title}
+                    </span>
+                   
               </SidebarMenuButton>
               
               <DropdownMenu>
