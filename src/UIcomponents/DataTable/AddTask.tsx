@@ -19,16 +19,18 @@ import { TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
 interface TaskFormData {
   title: string;
+  content:string;
   priority: TaskPriority;
   deadline: Date;
   status: TaskStatus;
 }
 
 type AddTaskProps = {
-  refreshTable: () => void
+  refreshTable: () => void,
+  projectId:number
 };
 
-export function AddTask({refreshTable}: AddTaskProps) {
+export function AddTask({refreshTable,projectId}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -40,6 +42,7 @@ export function AddTask({refreshTable}: AddTaskProps) {
   } = useForm<TaskFormData>({
     defaultValues: {
       title: "",
+      content:"",
       priority: TaskPriority.MEDIUM,
       deadline: new Date(),
       status: TaskStatus.PENDING
@@ -47,8 +50,9 @@ export function AddTask({refreshTable}: AddTaskProps) {
   });
 
   const onSubmit = async (data: TaskFormData) => {
+    
     try {
-      await addTask(data);
+      await addTask(data,projectId);
       reset({
        title: "",
       priority: TaskPriority.MEDIUM,

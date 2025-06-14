@@ -28,6 +28,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     isLoading: boolean;
     refreshTable: () => void;
+    projectId:number;
     setView: React.Dispatch<React.SetStateAction<ViewType>>;
 }
 
@@ -36,6 +37,7 @@ export default function DataTable<TData, TValue>({
     data,
     isLoading,
     refreshTable,
+    projectId,
     setView
 }: DataTableProps<TData, TValue>) {
 
@@ -76,7 +78,7 @@ export default function DataTable<TData, TValue>({
                 </Button>
             </div>
             <div className="flex flex-row-reverse mx-auto p-4">
-                <AddTask refreshTable={refreshTable} />
+                <AddTask refreshTable={refreshTable} projectId = {projectId}/>
             </div>
             <div className="flex justify-center mt-4 px-4">
                 <div className="w-full p-4 bg-white shadow-md rounded-md border">

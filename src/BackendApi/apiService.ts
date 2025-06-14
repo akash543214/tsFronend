@@ -13,9 +13,12 @@ const axiosInstance = axios.create({
   withCredentials: true, // equivalent to credentials: "include"
 });
 
-export const addTask = async (task: any) => {
+export const addTask = async (task: any,projectId:number) => {
+
+  console.log(task);
+  console.log(projectId);
   try {
-    const response = await axiosInstance.post('/addtask', task);
+    const response = await axiosInstance.post(`/task/create-task/${projectId}`, task);
     return response.data; // axios automatically parses JSON
   } catch (error) {
     if (axios.isAxiosError(error)) {

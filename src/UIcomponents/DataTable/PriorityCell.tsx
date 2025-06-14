@@ -17,10 +17,10 @@ export default function PriorityCell({ row }: { row: any }) {
   
 // Priority options
 const priorityOptions = [
-    { value: TaskPriority.LOW, label: "Low" },
-    { value: TaskPriority.MEDIUM, label: "Medium" },
-    { value: TaskPriority.HIGH, label: "High" },
-    { value: TaskPriority.URGENT, label: "Urgent" }
+    { value: TaskPriority.LOW, label: "LOW" },
+    { value: TaskPriority.MEDIUM, label: "MEDIUM" },
+    { value: TaskPriority.HIGH, label: "HIGH" },
+    { value: TaskPriority.URGENT, label: "URGENT" }
   ] as const;
   
   

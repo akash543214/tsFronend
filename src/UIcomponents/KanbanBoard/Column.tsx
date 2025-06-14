@@ -38,7 +38,7 @@ function Column({ id, title, tasks }: ColumnProps) {
                         <TaskCard 
                             key={task.id} 
                             taskId={task.id}
-                            taskTitle={task.content} 
+                            taskTitle={task.title} 
                         /> 
                     ))}
                 </div>

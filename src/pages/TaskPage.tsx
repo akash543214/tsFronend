@@ -6,21 +6,7 @@ import { getColumns } from "../UIcomponents/DataTable/columns";
 import KanbanBoard from "@/UIcomponents/KanbanBoard/KanbanBoard";
 import { ViewType } from "@/types/common";
 import { useParams } from "react-router-dom";
-import { TaskStatus, TaskPriority } from "@/types/common";
 
-const mock:Task[] = [
-  {
-    id: 1,
-    title:"title",
-    content: "Design project dashboard",
-    project_id:1,
-    owner_id:1,
-    status: TaskStatus.PENDING,
-    priority: TaskPriority.HIGH,
-    deadline: new Date(),
-    created_at: new Date(),
-  }
-]
 
 export default function TaskPage()
 {
@@ -61,6 +47,7 @@ export default function TaskPage()
          isLoading={isLoading}
          refreshTable = {getTasksData}
           setView={setView}
+          projectId={Number(id)}
          />  
     );
 }
