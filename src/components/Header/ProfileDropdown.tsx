@@ -8,17 +8,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { user } from "@/types/common";
+import { RootState } from "@/store/store";
 import { useCallback } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+    
+
 type ProfileDropdownProps = {
-userData?: user | null;
 handleLogout?: () => void;
 }
 
-export default function ProfileDropdown({userData,handleLogout}: ProfileDropdownProps)
+export default function ProfileDropdown({handleLogout}: ProfileDropdownProps)
 {
   const navigate = useNavigate();
+const user = useSelector((state: RootState) => state.auth.userData);
 
   const handleProfileClick = useCallback(() => {
    
@@ -54,7 +57,7 @@ export default function ProfileDropdown({userData,handleLogout}: ProfileDropdown
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>{userData?.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         
         {

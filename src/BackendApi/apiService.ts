@@ -182,27 +182,26 @@ export const logoutUser = async()=>{
 
 
 export const updateUser = async (updateObj: { fieldToUpdate: any; }) => {
- // const { fieldToUpdate } = updateObj;
-/*
+  const { fieldToUpdate } = updateObj;
+
   if (!fieldToUpdate) {
     console.error("Invalid update object:", updateObj);
     return;
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/update-user`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fieldToUpdate || {}),
-    });
-
-    return await handleResponse(response);
+    const response = await axiosInstance.patch('/user/update-profile',fieldToUpdate);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error updating user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
-    */
+    
 };
 
 export const updatePassword = async (updateObj: { fieldToUpdate: any; }) => {

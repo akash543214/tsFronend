@@ -2,12 +2,13 @@
 import { FaUserEdit } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import { UserData } from "@/types/common";
+//import { UserData } from "@/types/common";
 import { AppDispatch } from "@/store/store";
 import { updateUserData } from "@/store/authSlice";
 import { updateUser } from "@/BackendApi/apiService";
 import { RootState } from "@/store/store";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type profileFormData = {  
     name: string;
@@ -20,6 +21,7 @@ export default function ProfileUpdate()
      const [error, setError] = useState("");
       const dispatch = useDispatch<AppDispatch>();
       const user = useSelector((state: RootState) => state.auth.userData);
+        const [isDisabled] = useState(user?.provider !== 'local');
 
        const { 
           register, 
@@ -35,6 +37,10 @@ export default function ProfileUpdate()
   const handleUpdateProfile = async (profileData:profileFormData) => {
 
     const { name, email } = profileData;
+
+    if(name.trim()===user?.name)
+      return;
+
     try {
       const res = await updateUser({
         fieldToUpdate: {
@@ -42,14 +48,17 @@ export default function ProfileUpdate()
           email: email,
         },
       });
+       
+      if (res.success) {
+        dispatch(updateUserData(res.data));
 
-      if (res.acknowledged) {
-        const newUser: UserData = {
-          ...user,
-          name: name,
-          email:email,
-        };
-        dispatch(updateUserData(newUser));
+         toast("Profile has been updated", {
+          description: "",
+          action: {
+            label: "",
+            onClick: () => {},
+          },
+        })
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -89,6 +98,7 @@ export default function ProfileUpdate()
                       message: "Invalid email address"
                     }
                   })} 
+                  disabled = {isDisabled}
                 />
                 {errors.email && (
                   <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -96,12 +106,14 @@ export default function ProfileUpdate()
         </div>
         <div className="flex justify-center mt-4">
           <button
+          
             type="submit"
             className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
           >
             <FaUserEdit className="text-lg" /> Update Profile
           </button>
         </div>
+                
         </form>
     );
 }

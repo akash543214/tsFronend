@@ -27,7 +27,6 @@ export default function Header() {
   //  const navigate = useNavigate();
   
     const authStatus = useSelector((state: RootState) => state.auth.status);
-    const user = useSelector((state: RootState) => state.auth.userData);
   
     // Memoized logout handler to prevent recreating on every render
     const handleLogout = useCallback(async () => {
@@ -70,7 +69,7 @@ export default function Header() {
       <div className="flex items-center gap-4">
 
         {authStatus ? (
-        <ProfileDropdown userData={user} handleLogout={handleLogout}/>
+        <ProfileDropdown handleLogout={handleLogout}/>
         ) : (
             <div>
          <LoginModal />
