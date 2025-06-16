@@ -1,39 +1,33 @@
 
-import {editTask } from "../BackendApi/apiService";
+import {updateTask } from "../BackendApi/apiService";
 import { deleteTask } from "../BackendApi/apiService";
 
-type valueType = string | Date;
-
-type editFunctionProps = {
+type handleUpdateTaskProps = {
   key:string,
-  value:valueType,
-  id:number
+  value:string | Date,
+  taskId:number
 }
 
-export const editFunction = async ({key,
+export const handleUpdateTask = async ({key,
   value,
-  id}:editFunctionProps) => {
+  taskId
+}:handleUpdateTaskProps) => {
   
-  console.log(key, value, id);
 
   try {
-   const res= await editTask({ id: id, fieldToUpdate: { [key]: value } });
+   const res= await updateTask({fieldToUpdate: { [key]: value },taskId });
    console.log(res);
+
   } catch (error) {
-    console.error("Error editing task:", error);
-  } finally {
-    // getTasksData();
-  }
+    console.error("Error updating task:", error);
+  } 
 };
   
-
     export const handleDelete = async (id:number) => {
       try {
         await deleteTask(id);
       } catch (error) {
         console.error("Error deleting task:", error);
-      } finally{
-
-      }
+      } 
     };
   

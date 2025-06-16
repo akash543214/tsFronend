@@ -9,8 +9,8 @@ import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Define custom sorting orders
-const priorityOrder = { high: 0, medium: 1, low: 2 };
-const statusOrder = { incomplete: 0, inprogress: 1, completed: 2 };
+const priorityOrder = {LOW:0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
+const statusOrder = { PENDING: 0, IN_PROGRESS: 1, COMPLETED: 2 };
 
 export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   {
@@ -19,7 +19,7 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
     cell: ({ row }) => {
       const hasSubtasks = row.original.subtasks && row.original.subtasks.length > 0;
       const canExpand = row.getCanExpand();
-     
+      
       return (
         <div className="flex items-center space-x-2">
           {canExpand && hasSubtasks ? (
@@ -120,30 +120,14 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
     },
     cell: ({ row }) => <StatusCell row={row} />,
     sortingFn: (rowA, rowB, columnId) => {
-      const statusA = rowA.getValue(columnId) as string;
-      const statusB = rowB.getValue(columnId) as string;
-      
-      // Convert boolean isComplete to status string if needed
-      let statusAStr: string;
-      let statusBStr: string;
-      
-      if (typeof statusA === 'boolean') {
-        statusAStr = statusA ? 'completed' : 'incomplete';
-      } else {
-        statusAStr = statusA?.toLowerCase() || 'incomplete';
-      }
-      
-      if (typeof statusB === 'boolean') {
-        statusBStr = statusB ? 'completed' : 'incomplete';
-      } else {
-        statusBStr = statusB?.toLowerCase() || 'incomplete';
-      }
-      
-      const orderA = statusOrder[statusAStr as keyof typeof statusOrder] ?? 999;
-      const orderB = statusOrder[statusBStr as keyof typeof statusOrder] ?? 999;
-      
-      return orderA - orderB;
-    },
+    const statusA = rowA.getValue(columnId) as string;
+    const statusB = rowB.getValue(columnId) as string;
+    
+    const orderA = statusOrder[statusA as keyof typeof statusOrder] ?? 999;
+    const orderB = statusOrder[statusB as keyof typeof statusOrder] ?? 999;
+    
+    return orderA - orderB;
+  },
   },
   {
     accessorKey: "priority",
@@ -160,8 +144,8 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
     },
     cell: ({ row }) => <PriorityCell row={row} />,
     sortingFn: (rowA, rowB, columnId) => {
-      const priorityA = (rowA.getValue(columnId) as string)?.toLowerCase() || 'low';
-      const priorityB = (rowB.getValue(columnId) as string)?.toLowerCase() || 'low';
+      const priorityA = rowA.getValue(columnId) as string;
+      const priorityB = rowB.getValue(columnId) as string;
       
       const orderA = priorityOrder[priorityA as keyof typeof priorityOrder] ?? 999;
       const orderB = priorityOrder[priorityB as keyof typeof priorityOrder] ?? 999;

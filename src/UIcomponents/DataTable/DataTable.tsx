@@ -54,7 +54,7 @@ export default function DataTable<TData, TValue>({
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         onExpandedChange: setExpanded,
-        getSubRows: (row: any) => row.subTasks || [], // Tell TanStack where to find subtasks
+        getSubRows: (row: any) => row.subtasks || [], // Tell TanStack where to find subtasks
         state: {
             rowSelection,
             sorting,

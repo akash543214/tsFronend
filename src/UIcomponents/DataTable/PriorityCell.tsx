@@ -9,7 +9,7 @@ import { Task } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { editFunction } from "@/utils/dataTableFunctions";
+import { handleUpdateTask } from "@/utils/dataTableFunctions";
 import { TaskPriority } from "@/types/common";
 
 export default function PriorityCell({ row }: { row: any }) {
@@ -42,9 +42,11 @@ const priorityOptions = [
 
     const handlePriorityChange = (newPriority: Task["priority"]) => {
 
-      editFunction({key:"priority", 
+      handleUpdateTask(
+        {key:"priority", 
         value:newPriority,
-        id: row.original.id});
+      taskId: row.original.id}
+    );
       setPriority(newPriority);
     };
   
@@ -68,7 +70,7 @@ const priorityOptions = [
               <Badge variant={getPriorityVariant(option.value)} className="mr-2">
                 {option.label}
               </Badge>
-              {option.label}
+             
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

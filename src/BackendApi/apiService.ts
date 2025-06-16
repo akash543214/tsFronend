@@ -15,8 +15,7 @@ const axiosInstance = axios.create({
 
 export const addTask = async (task: any,projectId:number) => {
 
-  console.log(task);
-  console.log(projectId);
+  
   try {
     const response = await axiosInstance.post(`/task/create-task/${projectId}`, task);
     return response.data; // axios automatically parses JSON
@@ -47,35 +46,30 @@ export const getProjects = async () => {
 };
 
 
-export const editTask = async (updateObj: { id: number; 
+export const updateTask = async (updateObj: { taskId: number; 
   fieldToUpdate: any; }) => {
-  /*  
-  const { id, fieldToUpdate } = updateObj;
 
-  if (!id || !fieldToUpdate) {
-    console.error("Invalid update object:", updateObj);
-    return;
-  }
-
+      const { taskId, fieldToUpdate } = updateObj;
+       console.log(fieldToUpdate);
+       console.log(typeof taskId);
   try {
-    const response = await fetch(`${BASE_URL}/updatetask?id=${id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fieldToUpdate || {}),
-    });
-
-    return await handleResponse(response);
+    const response = await axiosInstance.patch(`/task/update-task/${taskId}`,fieldToUpdate);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error editing task:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
-  }*/
+  }
 };
 
 export const getTasks = async (projectId:number) => {
 
    try {
-    const response = await axiosInstance.get(`/task/top-level-tasks/${projectId}`);
+    const response = await axiosInstance.get(`/task/tasks-with-allsubtasks/${projectId}`);
     return response.data; // axios automatically parses JSON
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -23,7 +23,7 @@ export function SelectPriority({ value, onValueChange }: SelectPriorityProps) {
       <option value="">Select Priority</option>
       {priorityOptions.map((priority) => (
         <option key={priority.label} value={priority.value}>
-          {priority.value}
+          {priority.label}
         </option>
       ))}
     </select>

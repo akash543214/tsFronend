@@ -15,7 +15,7 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable';
 import { Task, TaskStatus } from '@/types/common';
-import { editFunction } from '@/utils/dataTableFunctions';
+import { handleUpdateTask } from '@/utils/dataTableFunctions';
 
 interface Column {
   id: number;
@@ -164,10 +164,10 @@ export function useKanbanDragDrop(
       // Moving to a different column
      // console.log(`🎯 FINAL MOVE from ${activeColumn.title} to ${overColumn.title}`);
       
-      editFunction({
-        key: "isComplete",
+      handleUpdateTask({
+        key: "status",
         value: overColumn.status,
-        id: activeId
+        taskId: activeId
       });
     } else {
       // Reordering within the same column

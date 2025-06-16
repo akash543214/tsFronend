@@ -1,10 +1,14 @@
 import {useState} from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, 
+  DropdownMenuContent,
+   DropdownMenuItem,
+    DropdownMenuTrigger } 
+    from "@/components/ui/dropdown-menu";
 import { Task } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { editFunction } from "@/utils/dataTableFunctions";
+import { handleUpdateTask } from "@/utils/dataTableFunctions";
 import { TaskStatus } from "@/types/common";
 
 
@@ -22,18 +26,18 @@ export default function StatusCell({ row }: { row: any }) {
         }
       };
       const statusOptions = [
-        { value: TaskStatus.PENDING, label: "Pending" },
-        { value: TaskStatus.IN_PROGRESS, label: "In Progress" },
-        { value: TaskStatus.COMPLETED, label: "Completed" }
+        { value: TaskStatus.PENDING, label: "PENDING" },
+        { value: TaskStatus.IN_PROGRESS, label: "IN PROGRESS" },
+        { value: TaskStatus.COMPLETED, label: "COMPLETED" }
       ] as const;
 
     const [status, setStatus] = useState(row.getValue("status") as Task["status"]);
   
     const handleStatusChange = (newStatus: Task["status"]) => {
-      editFunction({
+      handleUpdateTask({
         key: "status",
         value: newStatus,
-        id: row.original.id
+        taskId: row.original.id
       });
       setStatus(newStatus);
     };
@@ -43,7 +47,7 @@ export default function StatusCell({ row }: { row: any }) {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-auto p-2 justify-start">
             <Badge variant={getStatusVariant(status)} className="mr-2">
-              {status === TaskStatus.IN_PROGRESS ? "In Progress" : status}
+              {status === TaskStatus.IN_PROGRESS ? "IN PROGRESS" : status}
             </Badge>
             <ChevronDown className="h-3 w-3" />
           </Button>
@@ -58,7 +62,7 @@ export default function StatusCell({ row }: { row: any }) {
               <Badge variant={getStatusVariant(option.value)} className="mr-2">
                 {option.label}
               </Badge>
-              {option.label}
+             
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

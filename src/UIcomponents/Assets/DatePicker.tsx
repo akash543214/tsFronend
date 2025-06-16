@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { editFunction } from "@/utils/dataTableFunctions"
+import { handleUpdateTask } from "@/utils/dataTableFunctions"
 import { Task } from "@/types/common"
 
 type DatePickerProps = {
@@ -24,7 +24,11 @@ export function DatePicker({ row }: DatePickerProps) {
 
   const handleDateChange = async (newDate: Date) => {
     try {
-      await editFunction("deadline", newDate, row.original._id)
+      await handleUpdateTask(
+        {key:"deadline",
+          value: newDate,
+          taskId: row.original.id
+        })
       setDate(newDate)
       setOpen(false)
     } catch (error) {
