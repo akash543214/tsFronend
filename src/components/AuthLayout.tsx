@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import { RootState } from "../store/store"; 
 import {useNavigate} from 'react-router-dom';
-import LoadScreen from './Assets/LoadScreen';
+import LoadScreen from '../components/Assets/LoadScreen';
 import Layout from '@/pages/Layout';
 
 import { ReactNode } from 'react';

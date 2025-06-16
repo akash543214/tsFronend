@@ -1,12 +1,11 @@
-import DataTable from "@/UIcomponents/DataTable/DataTable";
+import DataTable from "@/components/DataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
 import { getTasks } from "@/BackendApi/apiService";
 import { Task } from "@/types/common";
-import { getColumns } from "../UIcomponents/DataTable/columns";
-import KanbanBoard from "@/UIcomponents/KanbanBoard/KanbanBoard";
+import { getColumns } from "../components/DataTable/columns";
 import { ViewType } from "@/types/common";
 import { useParams } from "react-router-dom";
-
+import KanbanBoard from "@/components/KanbanBoard/KanbanBoard";
 
 export default function TaskPage()
 {

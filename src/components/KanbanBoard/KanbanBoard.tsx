@@ -3,7 +3,7 @@ import { DndContext, DragOverlay, closestCorners } from '@dnd-kit/core';
 import { useKanbanDragDrop } from '@/hooks/useKanbanDragDrop';
 import Column from "./Column";
 import TaskCard from "./TaskCard";
-import LoadScreen from "../Assets/LoadScreen";
+import LoadScreen from "../../components/Assets/LoadScreen";
 import { Button } from "@/components/ui/button";
 import { ViewType } from "@/types/common";
 

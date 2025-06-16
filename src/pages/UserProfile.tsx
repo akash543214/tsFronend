@@ -1,7 +1,7 @@
 
 import { format } from "date-fns";
-import ProfileUpdate from "@/UIcomponents/User/ProfileUpdate";
-import PasswordUpdate from "@/UIcomponents/User/PasswordUpdate";
+import ProfileUpdate from "@/components/User/ProfileUpdate";
+import PasswordUpdate from "@/components/User/PasswordUpdate";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 

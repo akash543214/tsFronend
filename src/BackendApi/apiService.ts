@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // equivalent to credentials: "include"
+  withCredentials: true, 
 });
 
 export const addTask = async (task: any,projectId:number) => {
