@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import LoadScreen from "../Assets/LoadScreen";
 import { AddTask } from "./AddTask";
 import {
@@ -20,14 +20,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { ViewType } from "@/types/common";
+import { Task, ViewType } from "@/types/common";
 import { Button } from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     isLoading: boolean;
-    refreshTable: () => void;
+    setTaskData: Dispatch<SetStateAction<Task[]>>;
     projectId:number;
     setView: React.Dispatch<React.SetStateAction<ViewType>>;
 }
@@ -36,7 +36,7 @@ export default function DataTable<TData, TValue>({
     columns,
     data,
     isLoading,
-    refreshTable,
+    setTaskData,
     projectId,
     setView
 }: DataTableProps<TData, TValue>) {
@@ -78,7 +78,7 @@ export default function DataTable<TData, TValue>({
                 </Button>
             </div>
             <div className="flex flex-row-reverse mx-auto p-4">
-                <AddTask refreshTable={refreshTable} projectId = {projectId}/>
+                <AddTask setTaskData={setTaskData} projectId = {projectId}/>
             </div>
             <div className="flex justify-center mt-4 px-4">
                 <div className="w-full p-4 bg-white shadow-md rounded-md border">

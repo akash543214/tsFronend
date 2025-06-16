@@ -78,8 +78,8 @@ export function SigninForm({ setSelectedForm, className, ...props }: SigninFormP
       
       // Auto-login after successful registration
       const loginResponse = await loginUser({ email, password });
-      
-      if (!loginResponse.login) {
+      console.log(loginResponse);
+      if (!loginResponse.success) {
         setError(loginResponse.error || "Login failed after registration");
       } else {
         dispatch(login(loginResponse.user));

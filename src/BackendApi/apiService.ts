@@ -14,8 +14,7 @@ const axiosInstance = axios.create({
 });
 
 export const addTask = async (task: any,projectId:number) => {
-
-  
+ 
   try {
     const response = await axiosInstance.post(`/task/create-task/${projectId}`, task);
     return response.data; // axios automatically parses JSON
@@ -83,37 +82,37 @@ export const getTasks = async (projectId:number) => {
 };
 
 
-export const deleteTask = async (id:number) => {
+export const deleteTask = async (taskId:number) => {
 
-  /*
-  try {
-    const response = await fetch(`${BASE_URL}/removetask?id=${id}`, {
-      method: "DELETE",
-      credentials: "include"
-    });
-    return handleResponse(response);
+ try {
+    const response = await axiosInstance.delete(`/task/delete-task/${taskId}`);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error deleting user:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
-    */
 };
 
 export const createUser = async (User: { name: string; email: string; password: string; }) => {
-/*
-  const {name,email,password} = User;
-  try {
-    const response = await fetch(`${BASE_URL}/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name,email,password }),
-    });
-    return handleResponse(response);
+
+ try {
+    const response = await axiosInstance.post('/register-user', User);
+    return response.data; // axios automatically parses JSON
   } catch (error) {
-    console.error("Error getting users:", error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
     throw error;
   }
-    */
+    
 };
 
 export const deleteUser = async () => {

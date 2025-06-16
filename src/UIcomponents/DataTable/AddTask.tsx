@@ -14,8 +14,8 @@ import { addTask } from "@/BackendApi/apiService";
 import { SelectPriority } from "./SelectPriority";
 import { DatePicker } from "./DatePicker";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
-import { TaskStatus } from "@/types/common";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Task, TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
 interface TaskFormData {
   title: string;
@@ -26,11 +26,11 @@ interface TaskFormData {
 }
 
 type AddTaskProps = {
-  refreshTable: () => void,
+  setTaskData: Dispatch<SetStateAction<Task[]>>,
   projectId:number
 };
 
-export function AddTask({refreshTable,projectId}: AddTaskProps) {
+export function AddTask({setTaskData,projectId}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -50,22 +50,22 @@ export function AddTask({refreshTable,projectId}: AddTaskProps) {
   });
 
   const onSubmit = async (data: TaskFormData) => {
-    
     try {
-      await addTask(data,projectId);
+      const newTask = await addTask(data, projectId);
+      console.log(newTask)
+      setTaskData(prev => [...prev, newTask.data]);
+
       reset({
-       title: "",
-      priority: TaskPriority.MEDIUM,
-      deadline: new Date(),
-      status: TaskStatus.PENDING
+        title: "",
+        priority: TaskPriority.MEDIUM,
+        deadline: new Date(),
+        status: TaskStatus.PENDING
       });
+
       setOpen(false);
+
     } catch (err) {
       console.error(err);
-    }
-    finally {
-        refreshTable();
-      
     }
   };
 

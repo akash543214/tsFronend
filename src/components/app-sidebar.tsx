@@ -34,25 +34,7 @@ import { useState } from "react";
 import { projectData } from "@/types/common";
 import { useEffect } from "react";
 import { getProjects } from "@/BackendApi/apiService";
-/*
-const projects = [
 
-  {
-    name: "Project A",
-    url: "#",
-    
-  },
-  {
-    name: "Project B",
-    url: "#",
-    
-  },
-  {
-    name: "Project C",
-    url: "#",
-  },
-]
-*/
 export function AppSidebar() {
     const navigate = useNavigate();
      

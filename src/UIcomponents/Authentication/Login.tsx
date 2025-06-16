@@ -51,10 +51,10 @@ type LoginFormProps = {
   
       try {
         const response = await loginUser(data);
-        if (response.login === false) 
+        if (!response.success) 
           setError(response.error || "");
          else 
-          dispatch(login(response.user));
+          dispatch(login(response.data.user));
          
           reset({
             email: "",

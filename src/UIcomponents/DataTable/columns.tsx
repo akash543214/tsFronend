@@ -7,12 +7,13 @@ import Actions from "./Actions"
 import { Task } from "@/types/common";
 import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Dispatch, SetStateAction } from "react"
 
 // Define custom sorting orders
 const priorityOrder = {LOW:0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
 const statusOrder = { PENDING: 0, IN_PROGRESS: 1, COMPLETED: 2 };
 
-export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
+export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>): ColumnDef<Task>[] => [
   {
     id: "expander",
     header: "",
@@ -170,6 +171,6 @@ export const getColumns = (refreshTable: () => void): ColumnDef<Task>[] => [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions row={row} refreshTable={refreshTable}/>,
+    cell: ({ row }) => <Actions row={row} setTaskData={setTaskData}/>,
   },
 ]

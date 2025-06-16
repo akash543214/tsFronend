@@ -34,7 +34,7 @@ export default function TaskPage()
   
     },[getTasksData,view,setView]);
    
-    const columns = getColumns(getTasksData); // pass refresh function here
+    const columns = getColumns(setTaskData); // pass refresh function here
 
     return (
       view === 'kanban' ?
@@ -45,7 +45,7 @@ export default function TaskPage()
          columns={columns}  
          data={taskData} 
          isLoading={isLoading}
-         refreshTable = {getTasksData}
+         setTaskData = {setTaskData}
           setView={setView}
           projectId={Number(id)}
          />  
