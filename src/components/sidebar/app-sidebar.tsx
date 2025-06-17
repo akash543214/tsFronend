@@ -2,7 +2,6 @@ import { Calendar,
    Home, 
    Inbox,
    MoreHorizontal,
-   Plus,
    Search, 
    Settings,
    UserRoundCog
@@ -34,7 +33,7 @@ import { useState } from "react";
 import { projectData } from "@/types/common";
 import { useEffect } from "react";
 import { getProjects } from "@/BackendApi/apiService";
-
+import { AddProject } from "./AddProject";
 export function AppSidebar() {
     const navigate = useNavigate();
      
@@ -128,7 +127,8 @@ export function AppSidebar() {
         <SidebarGroup>
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarGroupAction title="Add Project">
-        <Plus /> <span className="sr-only">Add Project</span>
+         <span className="sr-only">Add Project</span>
+          <AddProject setProjects = {setProjects}/>
       </SidebarGroupAction>
       <SidebarGroupContent>
         <SidebarMenu>

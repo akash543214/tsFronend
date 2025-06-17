@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import DownArrow from "./DownSvg";
-import useClickOutside from "../../CustomHooks/useClickOutside";
-
+import useClickOutside from "@/hooks/CustomHooks/useClickOutside";
 
 type DropdownProps = { selected: any; 
   isHovered?: boolean; 

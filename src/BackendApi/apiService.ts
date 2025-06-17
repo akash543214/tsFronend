@@ -1,7 +1,6 @@
 // apiService.js
 const BASE_URL = import.meta.env.VITE_API_URL;
 //import { Task } from "@/types/common";
-
 import axios from 'axios';
 
 // Configure axios instance with default settings
@@ -17,7 +16,7 @@ export const addTask = async (task: any,projectId:number) => {
  
   try {
     const response = await axiosInstance.post(`/task/create-task/${projectId}`, task);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -32,7 +31,7 @@ export const addTask = async (task: any,projectId:number) => {
 export const getProjects = async () => {
   try {
     const response = await axiosInstance.get('/project/get-projects');
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -53,7 +52,7 @@ export const updateTask = async (updateObj: { taskId: number;
        console.log(typeof taskId);
   try {
     const response = await axiosInstance.patch(`/task/update-task/${taskId}`,fieldToUpdate);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -69,7 +68,7 @@ export const getTasks = async (projectId:number) => {
 
    try {
     const response = await axiosInstance.get(`/task/tasks-with-allsubtasks/${projectId}`);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -86,7 +85,7 @@ export const deleteTask = async (taskId:number) => {
 
  try {
     const response = await axiosInstance.delete(`/task/delete-task/${taskId}`);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -102,7 +101,7 @@ export const createUser = async (User: { name: string; email: string; password: 
 
  try {
     const response = await axiosInstance.post('/register-user', User);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -136,7 +135,7 @@ export const loginUser = async(User: { email: string;
 
  try {
     const response = await axiosInstance.post('/login-user', User);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -152,7 +151,7 @@ export const verifyUserlogin = async()=>{
 
 try {
     const response = await axiosInstance.post('/verify-login');
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -168,7 +167,22 @@ export const logoutUser = async()=>{
 
    try {
     const response = await axiosInstance.post('/logout-user');
-    return response.data; // axios automatically parses JSON
+    return response.data; 
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
+      console.error("Error adding task:", errorMessage);
+      throw new Error(errorMessage);
+    }
+    console.error("Error adding task:", error);
+    throw error;
+  }
+}
+export const addProject = async(project:any)=>{
+
+   try {
+    const response = await axiosInstance.post(`/project/create-project/`, project);
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
@@ -180,7 +194,6 @@ export const logoutUser = async()=>{
   }
 }
 
-
 export const updateUser = async (updateObj: { fieldToUpdate: any; }) => {
   const { fieldToUpdate } = updateObj;
 
@@ -191,7 +204,7 @@ export const updateUser = async (updateObj: { fieldToUpdate: any; }) => {
 
   try {
     const response = await axiosInstance.patch('/user/update-profile',fieldToUpdate);
-    return response.data; // axios automatically parses JSON
+    return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
