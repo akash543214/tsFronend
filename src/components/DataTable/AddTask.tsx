@@ -18,20 +18,23 @@ import { useForm, Controller } from "react-hook-form";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Task, TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
+import { Plus } from "lucide-react";
 interface TaskFormData {
   title: string;
   content:string;
   priority: TaskPriority;
   deadline: Date;
   status: TaskStatus;
+  parent_task_id?: number; // Optional, if needed for sub-tasks
 }
 
 type AddTaskProps = {
   setTaskData: Dispatch<SetStateAction<Task[]>>,
-  projectId:number
+  projectId:number,
+  parentId?: number // Optional, if needed for sub-tasks
 };
 
-export function AddTask({setTaskData,projectId}: AddTaskProps) {
+export function AddTask({setTaskData,projectId,parentId}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -46,21 +49,71 @@ export function AddTask({setTaskData,projectId}: AddTaskProps) {
       content:"",
       priority: TaskPriority.MEDIUM,
       deadline: new Date(),
-      status: TaskStatus.PENDING
+      status: TaskStatus.PENDING,
+      parent_task_id: parentId // Set parentId if provided
     }
   });
 
   const onSubmit = async (data: TaskFormData) => {
+
+    console.log(parentId);
+
     try {
       const newTask = await addTask(data, projectId);
-      console.log(newTask)
-      setTaskData(prev => [...prev, newTask.data]);
+
+          console.log("New task added:", newTask.data);
+          const parentTask = newTask.data.parent_task_id;
+
+          if(!parentTask) {   
+            // If it's a main task, add it directly to the task data
+            setTaskData(prev => [...prev, newTask.data]);
+          }
+          else {
+            console.log("Adding subtask to parent task:", parentId);
+
+              setTaskData(prev=>{
+                // Find the parent task and add the new subtask to it
+                  const newTaskData = [...prev];
+
+                    newTaskData.forEach(task=>{
+                  if(task.id===newTask.data.parent_task_id)
+                  {  
+                    if(!task.subtasks)
+                       {
+                      task.subtasks = [];
+                    }
+                    task.subtasks.push(newTask.data);
+                   
+                  }
+                  else{
+                    if(task.subtasks)
+                    {
+                      task.subtasks.forEach(subtask=>{
+                        if(subtask.id===newTask.data.parent_task_id)
+                        {
+                          if(!subtask.subtasks)
+                          {
+                            subtask.subtasks = [];
+                          }
+                          subtask.subtasks.push(newTask.data);
+                        }
+                      }
+                    )
+                    }
+                  }
+                  
+                })
+                return newTaskData;
+              })
+          }
+         
 
       reset({
         title: "",
         priority: TaskPriority.MEDIUM,
         deadline: new Date(),
-        status: TaskStatus.PENDING
+        status: TaskStatus.PENDING,
+        parent_task_id: parentId 
       });
 
       setOpen(false);
@@ -77,7 +130,8 @@ export function AddTask({setTaskData,projectId}: AddTaskProps) {
        title: "",
       priority: TaskPriority.MEDIUM,
       deadline: new Date(),
-      status: TaskStatus.PENDING
+      status: TaskStatus.PENDING,
+      parent_task_id: parentId 
       });
     }
   };
@@ -85,7 +139,7 @@ export function AddTask({setTaskData,projectId}: AddTaskProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="destructive">Add Task</Button>
+       <Plus className="h-4 w-4 text-gray-500 hover:text-gray-700 cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

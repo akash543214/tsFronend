@@ -33,7 +33,7 @@ export default function TaskPage()
   
     },[getTasksData,view,setView]);
    
-    const columns = getColumns(setTaskData); // pass refresh function here
+    const columns = getColumns(setTaskData,Number(id)); // pass refresh function here
 
     return (
       view === 'kanban' ?

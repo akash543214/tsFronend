@@ -5,15 +5,15 @@ import StatusCell from "./StatusCell"
 import PriorityCell from "./PriorityCell"
 import Actions from "./Actions"
 import { Task } from "@/types/common";
-import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dispatch, SetStateAction } from "react"
-
+import { AddTask } from "./AddTask"
 // Define custom sorting orders
 const priorityOrder = {LOW:0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
 const statusOrder = { PENDING: 0, IN_PROGRESS: 1, COMPLETED: 2 };
 
-export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>): ColumnDef<Task>[] => [
+export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectId:number): ColumnDef<Task>[] => [
   {
     id: "expander",
     header: "",
@@ -42,20 +42,13 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>): Column
           
           {/* Add subtask button - only show for main tasks and first level subtasks */}
           {row.depth < 2 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
-              onClick={() => {
-                // You'll need to implement this function
-                console.log('Add subtask to:', row.original.id);
-                // addSubtask(row.original.id);
-              }}
-              title="Add subtask"
-            >
-              <Plus className="h-3 w-3" />
-            </Button>
+            <AddTask
+                  setTaskData={setTaskData}
+                  projectId={projectId}
+                  parentId={row.original.id}/> 
           )}
+        
+              
         </div>
       );
     },
