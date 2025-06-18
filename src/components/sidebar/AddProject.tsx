@@ -12,22 +12,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { addProject } from "@/BackendApi/apiService";
 import { Plus } from "lucide-react";
-import { projectData } from "@/types/common";
+//import { projectData } from "@/types/common";
+import { createProject } from '../../store/projectSlice';
+import { AppDispatch } from '../../store/store';
+import { useDispatch } from "react-redux";
 
 interface TaskFormData {
   title: string;
-  content:string;
+  description:string;
 }
 
 type AddProjectProps = {
-  setProjects: Dispatch<SetStateAction<projectData[]>>,
+  //setProjects: Dispatch<SetStateAction<projectData[]>>,
 };
-export function AddProject({setProjects}: AddProjectProps) {
+export function AddProject({}: AddProjectProps) {
   const [open, setOpen] = useState(false);
-  
+       const dispatch = useDispatch<AppDispatch>();
+
   const { 
     register, 
     handleSubmit, 
@@ -36,19 +40,22 @@ export function AddProject({setProjects}: AddProjectProps) {
   } = useForm<TaskFormData>({
     defaultValues: {
       title: "",
-      content:"",
+      description:"",
     }
   });
 
   const onSubmit = async (data: TaskFormData) => {
     try {
       const newProject = await addProject(data);
+      
+          dispatch(createProject(data));
 
-      setProjects(prev => [...prev, newProject.data]);
+
+     // setProjects(prev => [...prev, newProject.data]);
       
       reset({
         title: "",
-        content: "",
+        description: "",
       });
 
       setOpen(false);
@@ -63,7 +70,7 @@ export function AddProject({setProjects}: AddProjectProps) {
     if (!newOpen) {
       reset({
        title: "",
-         content: "",
+         description: "",
       });
     }
   };
@@ -109,7 +116,7 @@ export function AddProject({setProjects}: AddProjectProps) {
               <div className="col-span-3 flex flex-col">
                 <Input 
                   id="content"
-                  {...register("content", { required: "Content is required" })}
+                  {...register("description", { required: "Content is required" })}
                 />
                 {errors.title && (
                   <p className="text-sm text-red-600 mt-1">{errors.title.message}</p>
@@ -130,3 +137,4 @@ export function AddProject({setProjects}: AddProjectProps) {
     </Dialog>
   )
 }
+

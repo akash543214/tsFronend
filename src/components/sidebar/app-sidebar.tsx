@@ -32,12 +32,19 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { projectData } from "@/types/common";
 import { useEffect } from "react";
-import { getProjects } from "@/BackendApi/apiService";
+//import { getProjects } from "@/BackendApi/apiService";
 import { AddProject } from "./AddProject";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../../store/store';
+import { fetchProjects, createProject, deleteProject } from '../../store/projectSlice';
+
+
+
 export function AppSidebar() {
+
+
     const navigate = useNavigate();
-     
-      
+       
    const handleHomeClick = useCallback(() => {
      
       navigate('/home');
@@ -48,6 +55,31 @@ export function AppSidebar() {
       navigate('/profile');
     }, [navigate]);
     
+
+
+    // Fetch projects from the Redux store
+     const dispatch = useDispatch<AppDispatch>();
+  const { items, loading, error } = useSelector((state: RootState) => state.projects);
+
+  //const [newTitle, setNewTitle] = useState('');
+  //const [newDesc, setNewDesc] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
+  /*
+  const handleCreate = () => {
+    dispatch(createProject({ title: newTitle, description: newDesc }));
+    setNewTitle('');
+    setNewDesc('');
+  };
+*/
+ // const handleDelete = (id: number) => {
+  //  dispatch(deleteProject(id));
+  //};
+
+    /*
       const [projects, setProjects] = useState<projectData[]>([]);
 
          const fetchProjects = useCallback(async () => {  
@@ -65,8 +97,8 @@ export function AppSidebar() {
                 fetchProjects();
           
             },[]);
-           
-    const items = [
+           */
+    const item = [
       {
         title: "Home",
         url: "#",
@@ -102,16 +134,19 @@ export function AppSidebar() {
       
     ]
     
-    
+         
+     
   return (
     <Sidebar className="my-12">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
-         
+       {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {item.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <button onClick={item.action}>
@@ -128,11 +163,10 @@ export function AppSidebar() {
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarGroupAction title="Add Project">
          <span className="sr-only">Add Project</span>
-          <AddProject setProjects = {setProjects}/>
       </SidebarGroupAction>
       <SidebarGroupContent>
         <SidebarMenu>
-          {projects.map((project) => (
+          { items.map((project:projectData) => (
             <SidebarMenuItem key={project.id}>
               <SidebarMenuButton asChild>
                   <span className="cursor-pointer"
