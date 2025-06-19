@@ -18,7 +18,6 @@ import { useForm, Controller } from "react-hook-form";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Task, TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
-import { Plus } from "lucide-react";
 interface TaskFormData {
   title: string;
   content:string;
