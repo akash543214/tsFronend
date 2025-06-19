@@ -15,9 +15,30 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-export default function DropDownAction() 
+import {
+  useDeleteProjectMutation,
+} from '@/store/api/projectsApi';
+
+type props = {
+  projectId: number;
+};
+
+export default function DropDownAction({projectId}:props) 
 
     {
+
+        const [deleteProject] =
+         useDeleteProjectMutation();
+      
+        
+        const handleDelete = async () => {
+          try {
+            await deleteProject(projectId).unwrap();
+          } catch (err) {
+            console.error('Delete error:', err);
+          }
+        }; 
+         
 
         return (
  <DropdownMenu>
@@ -31,7 +52,7 @@ export default function DropDownAction()
         <span>Edit Project</span>
       </DropdownMenuItem>
       <DropdownMenuItem>
-        <span>Delete Project</span>
+        <span onClick={handleDelete}>Delete Project</span>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

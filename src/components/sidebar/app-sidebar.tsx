@@ -20,7 +20,6 @@ import { AddProject } from "./AddProject";
 import SideBarItems from "./SideBarItems";
 import {
   useFetchProjectsQuery,
- // useDeleteProjectMutation,
 } from '@/store/api/projectsApi';
 import { useSelector } from "react-redux";
  import type { RootState } from '@/store/store';
@@ -39,20 +38,6 @@ const {
     error: fetchErrorDetails,
   } = useFetchProjectsQuery({ userId: user.userData?.id });
 
-
-console.log("Projects:", projects);
-  //const [deleteProject, { isLoading: deleting, isError: deleteError, error: deleteErrorDetails }] =
-  //  useDeleteProjectMutation();
-
-  /*
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteProject(id).unwrap();
-    } catch (err) {
-      console.error('Delete error:', err);
-    }
-  }; */
-   
    
      
   return (
@@ -82,7 +67,7 @@ console.log("Projects:", projects);
                    
               </SidebarMenuButton>
               
-            <DropDownAction />
+            <DropDownAction projectId = {project.id}/>
             </SidebarMenuItem>
             
           ))}
