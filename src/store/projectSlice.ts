@@ -35,7 +35,7 @@ export const fetchProjects = createAsyncThunk('projects/fetchAll', async () => {
 export const createProject = createAsyncThunk(
   'projects/create',
   async (project: { title: string; description: string }) => {
-    const res = await axios.post('/projects/create-project', project);
+    const res = await axiosInstance.post('/project/create-project', project);
     return res.data.data; // New Project
   }
 );
@@ -88,6 +88,7 @@ const projectsSlice = createSlice({
       })
 
       .addCase(deleteProject.fulfilled, (state, action) => {
+      state.loading = true;
         state.items = state.items.filter(p => p.id !== action.payload);
       })
 

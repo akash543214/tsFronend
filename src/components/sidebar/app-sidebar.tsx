@@ -1,11 +1,3 @@
-import { Calendar,
-   Home, 
-   Inbox,
-   MoreHorizontal,
-   Search, 
-   Settings,
-   UserRoundCog
-   } from "lucide-react"
 
 import {
   Sidebar,
@@ -15,158 +7,72 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
-import { useNavigate } from 'react-router-dom';
-import { useCallback } from "react";
-// Menu items.
-import { useState } from "react";
-import { projectData } from "@/types/common";
-import { useEffect } from "react";
-//import { getProjects } from "@/BackendApi/apiService";
-import { AddProject } from "./AddProject";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../store/store';
-import { fetchProjects, createProject, deleteProject } from '../../store/projectSlice';
 
+import DropDownAction from "./DropDownAction";
+import { useNavigate } from 'react-router-dom';
+// Menu items.
+import { projectData } from "@/types/common";
+import { AddProject } from "./AddProject";
+import SideBarItems from "./SideBarItems";
+import {
+  useFetchProjectsQuery,
+ // useDeleteProjectMutation,
+} from '@/store/api/projectsApi';
+import { useSelector } from "react-redux";
+ import type { RootState } from '@/store/store';
 
 
 export function AppSidebar() {
 
 
-    const navigate = useNavigate();
-       
-   const handleHomeClick = useCallback(() => {
-     
-      navigate('/home');
-    }, [navigate]);
-    
-    const handleProfileClick = useCallback(() => {
-     
-      navigate('/profile');
-    }, [navigate]);
-    
+       const navigate = useNavigate();
+       const  user  = useSelector((state: RootState) => state.auth); 
 
 
-    // Fetch projects from the Redux store
-     const dispatch = useDispatch<AppDispatch>();
-  const { items, loading, error } = useSelector((state: RootState) => state.projects);
+const {
+    data: projects,
+    isError: fetchError,
+    error: fetchErrorDetails,
+  } = useFetchProjectsQuery({ userId: user.userData?.id });
 
-  //const [newTitle, setNewTitle] = useState('');
-  //const [newDesc, setNewDesc] = useState('');
 
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, [dispatch]);
+console.log("Projects:", projects);
+  //const [deleteProject, { isLoading: deleting, isError: deleteError, error: deleteErrorDetails }] =
+  //  useDeleteProjectMutation();
 
   /*
-  const handleCreate = () => {
-    dispatch(createProject({ title: newTitle, description: newDesc }));
-    setNewTitle('');
-    setNewDesc('');
-  };
-*/
- // const handleDelete = (id: number) => {
-  //  dispatch(deleteProject(id));
-  //};
-
-    /*
-      const [projects, setProjects] = useState<projectData[]>([]);
-
-         const fetchProjects = useCallback(async () => {  
-              try {
-                const response = await getProjects();
-             //   console.log(response.data)
-                
-                 setProjects(response.data);
-              } catch (error) {
-                console.error("Error fetching tasks:", error);
-              } 
-            }, []);
-          
-            useEffect(()=>{
-                fetchProjects();
-          
-            },[]);
-           */
-    const item = [
-      {
-        title: "Home",
-        url: "#",
-        icon: Home,
-        action: handleHomeClick
-      },
-      {
-        title: "Profile",
-        url: "#",
-        icon: UserRoundCog,
-        action: handleProfileClick
-      },
-      {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-      },
-      {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-      },
-      {
-        title: "Search",
-        url: "#",
-        icon: Search,
-      },
-      {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-      }
-      
-    ]
-    
-         
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteProject(id).unwrap();
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+  }; */
+   
+   
      
   return (
-    <Sidebar className="my-12">
-      <SidebarContent>
+    <Sidebar className=" h-screen">
+      <SidebarContent className="pt-12">
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
-       {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {fetchError && <p>Error loading projects: {JSON.stringify(fetchErrorDetails)}</p>}
 
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {item.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <button onClick={item.action}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
+        <SideBarItems />
         </SidebarGroup>
         <SidebarGroup>
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarGroupAction title="Add Project">
          <span className="sr-only">Add Project</span>
+         <AddProject />
       </SidebarGroupAction>
-      <SidebarGroupContent>
+      <SidebarGroupContent >
         <SidebarMenu>
-          { items.map((project:projectData) => (
+          { projects?.map((project:projectData) => (
             <SidebarMenuItem key={project.id}>
               <SidebarMenuButton asChild>
                   <span className="cursor-pointer"
@@ -176,21 +82,7 @@ export function AppSidebar() {
                    
               </SidebarMenuButton>
               
-              <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <SidebarMenuAction>
-        <MoreHorizontal />
-      </SidebarMenuAction>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent side="right" align="start">
-      <DropdownMenuItem>
-        <span>Edit Project</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <span>Delete Project</span>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
+            <DropDownAction />
             </SidebarMenuItem>
             
           ))}

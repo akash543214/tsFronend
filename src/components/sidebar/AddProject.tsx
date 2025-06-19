@@ -13,13 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { addProject } from "@/BackendApi/apiService";
 import { Plus } from "lucide-react";
 //import { projectData } from "@/types/common";
-import { createProject } from '../../store/projectSlice';
-import { AppDispatch } from '../../store/store';
-import { useDispatch } from "react-redux";
 
+import {
+  useCreateProjectMutation,
+} from '@/store/api/projectsApi';
 interface TaskFormData {
   title: string;
   description:string;
@@ -30,7 +29,6 @@ type AddProjectProps = {
 };
 export function AddProject({}: AddProjectProps) {
   const [open, setOpen] = useState(false);
-       const dispatch = useDispatch<AppDispatch>();
 
   const { 
     register, 
@@ -43,15 +41,15 @@ export function AddProject({}: AddProjectProps) {
       description:"",
     }
   });
+  const [createProject] = useCreateProjectMutation();
 
   const onSubmit = async (data: TaskFormData) => {
     try {
-      const newProject = await addProject(data);
-      
-          dispatch(createProject(data));
+     // const newProject = await addProject(data);
+      const project =   await createProject(data).unwrap();
 
 
-     // setProjects(prev => [...prev, newProject.data]);
+            console.log("Project created:", project);
       
       reset({
         title: "",
