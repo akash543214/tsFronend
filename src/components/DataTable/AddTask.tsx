@@ -31,10 +31,11 @@ interface TaskFormData {
 type AddTaskProps = {
   setTaskData: Dispatch<SetStateAction<Task[]>>,
   projectId:number,
-  parentId?: number // Optional, if needed for sub-tasks
+  parentId?: number,
+  trigger?: React.ReactNode
 };
 
-export function AddTask({setTaskData,projectId,parentId}: AddTaskProps) {
+export function AddTask({setTaskData,projectId,parentId,trigger}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -56,7 +57,6 @@ export function AddTask({setTaskData,projectId,parentId}: AddTaskProps) {
 
   const onSubmit = async (data: TaskFormData) => {
 
-    console.log(parentId);
 
     try {
       const newTask = await addTask(data, projectId);
@@ -139,7 +139,8 @@ export function AddTask({setTaskData,projectId,parentId}: AddTaskProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-       <Plus className="h-4 w-4 text-gray-500 hover:text-gray-700 cursor-pointer" />
+       
+       {trigger}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

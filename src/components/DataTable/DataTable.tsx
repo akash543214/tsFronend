@@ -78,7 +78,8 @@ export default function DataTable<TData, TValue>({
                 </Button>
             </div>
             <div className="flex flex-row-reverse mx-auto p-4">
-                <AddTask setTaskData={setTaskData} projectId = {projectId}/>
+               
+                <AddTask setTaskData={setTaskData} projectId = {projectId} trigger={<Button variant="destructive">Add Task</Button>}/>
             </div>
             <div className="flex justify-center mt-4 px-4">
                 <div className="w-full p-4 bg-white shadow-md rounded-md border">

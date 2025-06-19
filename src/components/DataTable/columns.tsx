@@ -5,7 +5,7 @@ import StatusCell from "./StatusCell"
 import PriorityCell from "./PriorityCell"
 import Actions from "./Actions"
 import { Task } from "@/types/common";
-import { ArrowUpDown, ChevronDown, ChevronRight } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dispatch, SetStateAction } from "react"
 import { AddTask } from "./AddTask"
@@ -45,10 +45,10 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectI
             <AddTask
                   setTaskData={setTaskData}
                   projectId={projectId}
-                  parentId={row.original.id}/> 
+                  parentId={row.original.id}
+                  trigger={ <Plus className="h-4 w-4 text-gray-500 hover:text-gray-700 cursor-pointer" />}/> 
           )}
-        
-              
+         
         </div>
       );
     },
