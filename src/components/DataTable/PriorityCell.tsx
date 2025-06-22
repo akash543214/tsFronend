@@ -1,5 +1,4 @@
 
-import { useState} from "react";
 import { DropdownMenu,
    DropdownMenuContent,
    DropdownMenuItem, 
@@ -9,12 +8,16 @@ import { Task } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { handleUpdateTask } from "@/utils/dataTableFunctions";
+import { handleUpdateTask } from "@/utils/utilityFunctions";
 import { TaskPriority } from "@/types/common";
+import { useUpdateTaskMutation } from "@/store/api/tasksApi";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
 
 export default function PriorityCell({ row }: { row: any }) {
-    const [priority, setPriority] = useState(row.getValue("priority") as Task["priority"]);
-  
+  const priority = row.getValue("priority") as Task["priority"];
+  const [updateTask] = useUpdateTaskMutation();
 // Priority options
 const priorityOptions = [
     { value: TaskPriority.LOW, label: "LOW" },
@@ -40,14 +43,22 @@ const priorityOptions = [
     }
   };
 
+  const {id} = useParams();
+    const dispatch = useDispatch<AppDispatch>();
+  
     const handlePriorityChange = (newPriority: Task["priority"]) => {
+
+    //  setPriority(newPriority);
 
       handleUpdateTask(
         {key:"priority", 
         value:newPriority,
-      taskId: row.original.id}
+      taskId: row.original.id,
+      projectId: Number(id),
+      dispatch,
+        updateTask}
     );
-      setPriority(newPriority);
+     
     };
   
     return (

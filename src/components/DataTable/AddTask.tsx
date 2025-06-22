@@ -11,14 +11,19 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTask } from "@/BackendApi/apiService";
+//import { addTask } from "@/BackendApi/apiService";
 import { SelectPriority } from "./SelectPriority";
-import { DatePicker } from "./DatePicker";
+import { DatePicker } from "./DatePickerModal";
 import { useForm, Controller } from "react-hook-form";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Task, TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
-interface TaskFormData {
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { useCreateTaskMutation } from "@/store/api/tasksApi";
+import { handleAddTask } from "@/utils/utilityFunctions";
+
+type TaskFormData = {
   title: string;
   content:string;
   priority: TaskPriority;
@@ -34,7 +39,10 @@ type AddTaskProps = {
   trigger?: React.ReactNode
 };
 
-export function AddTask({setTaskData,projectId,parentId,trigger}: AddTaskProps) {
+export function AddTask({setTaskData,
+  projectId,
+  parentId,
+  trigger}: AddTaskProps) {
   const [open, setOpen] = useState(false);
   
   const { 
@@ -53,14 +61,17 @@ export function AddTask({setTaskData,projectId,parentId,trigger}: AddTaskProps) 
       parent_task_id: parentId // Set parentId if provided
     }
   });
+    const dispatch = useDispatch<AppDispatch>();
+  const [addTask] = useCreateTaskMutation();
 
-  const onSubmit = async (data: TaskFormData) => {
+  const onSubmit = async (taskData: TaskFormData) => {
 
+              handleAddTask({taskData, projectId,dispatch,addTask});
+               setOpen(false);
+  //  try {
+   //   const newTask = await handleAddTask(data, projectId,dispatch,addTask);
 
-    try {
-      const newTask = await addTask(data, projectId);
-
-          console.log("New task added:", newTask.data);
+          /*console.log("New task added:", newTask.data);
           const parentTask = newTask.data.parent_task_id;
 
           if(!parentTask) {   
@@ -104,6 +115,7 @@ export function AddTask({setTaskData,projectId,parentId,trigger}: AddTaskProps) 
                 })
                 return newTaskData;
               })
+                
           }
          
 
@@ -120,6 +132,7 @@ export function AddTask({setTaskData,projectId,parentId,trigger}: AddTaskProps) 
     } catch (err) {
       console.error(err);
     }
+      */
   };
 
   const handleOpenChange = (newOpen: boolean) => {

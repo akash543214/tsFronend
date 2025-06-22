@@ -1,66 +1,73 @@
-import { useState } from "react"
+import * as React from "react"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { Row } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
-
-interface DatePickerProps {
-  date?: Date;
-  onDateChange?: (date: Date | undefined) => void;
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { handleUpdateTask } from "@/utils/utilityFunctions"
+import { Task } from "@/types/common"
+import { useParams } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "@/store/store"
+import { useUpdateTaskMutation } from "@/store/api/tasksApi"
+type DatePickerProps = {
+  row: Row<Task>
 }
 
-export function DatePicker({ date, onDateChange }: DatePickerProps) {
-  const [showCalendar, setShowCalendar] = useState(false);
+export function DatePicker({ row }: DatePickerProps) {
+  const [date, setDate] = React.useState<Date>(row.getValue("deadline"))
+  const [open, setOpen] = React.useState(false)
 
-  const handleDateSelect = (selectedDate: Date | undefined) => {
-    onDateChange?.(selectedDate);
-    setShowCalendar(false);
-   
-  };
+  const { id } = useParams()
+  const dispatch = useDispatch<AppDispatch>()
+  const [updateTask] = useUpdateTaskMutation();
+  const handleDateChange = async (newDate: Date) => {
+    try {
+      await handleUpdateTask(
+        {key:"deadline", 
+        value:newDate,
+      taskId: row.original.id,
+      projectId: Number(id),
+      dispatch,
+        updateTask})
+      setDate(newDate)
+      setOpen(false)
+    } catch (error) {
+      console.error("Date update failed:", error)
+    }
+  }
 
   return (
-    <div className="relative">
-      <Button
-        type="button"
-        variant="outline"
-        className={cn(
-          "w-[240px] justify-start text-left font-normal",
-          !date && "text-muted-foreground"
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowCalendar(!showCalendar);
-        }}
-      >
-        <CalendarIcon className="mr-2 h-4 w-4" />
-        {date ? format(date, "PPP") : <span>Pick a date</span>}
-      </Button>
-
-      {showCalendar && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-40"
-            onClick={() => setShowCalendar(false)}
-          />
-          
-          {/* Calendar Modal */}
-          <div 
-            className="absolute top-full left-0 mt-2 z-50 bg-white border rounded-lg shadow-lg p-4"
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={handleDateSelect}
-              initialFocus
-            />
-          </div>
-        </>
-      )}
-    </div>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[180px] justify-start text-left font-normal",
+            !date && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {date ? format(date, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={(date) => {
+            if (date) handleDateChange(date)
+          }}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
   )
 }

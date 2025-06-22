@@ -12,9 +12,11 @@ export const projectsApi = createApi({
   }),
   tagTypes: ['Projects'],
   endpoints: (builder) => ({
-   fetchProjects: builder.query<projectData[], { userId: number | undefined }>({
-  query: () => `/project/get-projects`, 
-  transformResponse: (response: { data: projectData[] }) => response.data,
+
+
+      fetchProjects: builder.query<projectData[], { userId: number | undefined }>({
+            query: () => `/project/get-projects`, 
+            transformResponse: (response: { data: projectData[] }) => response.data,
 
   serializeQueryArgs: ({ queryArgs }) => {
     // use only userId as cache key

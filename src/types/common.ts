@@ -105,5 +105,14 @@ export type projectData = {
   user_id:    number,
   created_at:  Date
 }
+
+export type TaskFormData = {
+  title: string;
+  content:string;
+  priority: TaskPriority;
+  deadline: Date;
+  status: TaskStatus;
+  parent_task_id?: number; // Optional, if needed for sub-tasks
+}
   export type TaskStatusType = Task['status'];
   export type ViewType = 'table' | 'kanban';

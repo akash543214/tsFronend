@@ -6,25 +6,30 @@ import { getColumns } from "../components/DataTable/columns";
 import { ViewType } from "@/types/common";
 import { useParams } from "react-router-dom";
 import KanbanBoard from "@/components/KanbanBoard/KanbanBoard";
+import { useGetTasksQuery } from "@/store/api/tasksApi";
 
 export default function TaskPage()
 {
+        const {id} = useParams();
+const { data: tasksData = [], isLoading } = useGetTasksQuery(Number(id));
+
      const [taskData, setTaskData] = useState<Task[]>([]); 
-     const [isLoading, setIsLoading] = useState(true);
+   //  const [isLoading, setIsLoading] = useState(true);
     const [view, setView] = useState<ViewType>('table');
-      const {id} = useParams();
+
+console.log("taskdata",tasksData);
 
      const getTasksData = useCallback(async () => {  
-      setIsLoading(true);
+      //setIsLoading(true);
       try {
-        const response = await getTasks(Number(id));
-        console.log(response);
-        setTaskData(response.data);
+       // const response = await getTasks(Number(id));
+       // console.log(response);
+        setTaskData(tasksData);
 
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally{
-        setIsLoading(false);
+       // setIsLoading(false);
       }
     }, [id]);
   
@@ -42,7 +47,7 @@ export default function TaskPage()
        setView={setView}/> :
         <DataTable 
          columns={columns}  
-         data={taskData} 
+         data={tasksData} 
          isLoading={isLoading}
          setTaskData = {setTaskData}
           setView={setView}

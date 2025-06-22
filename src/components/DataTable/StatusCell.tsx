@@ -1,4 +1,3 @@
-import {useState} from "react";
 import { DropdownMenu, 
   DropdownMenuContent,
    DropdownMenuItem,
@@ -8,9 +7,12 @@ import { Task } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { handleUpdateTask } from "@/utils/dataTableFunctions";
+import { handleUpdateTask } from "@/utils/utilityFunctions";
 import { TaskStatus } from "@/types/common";
-
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { useUpdateTaskMutation } from "@/store/api/tasksApi";
 
 export default function StatusCell({ row }: { row: any }) {
     const getStatusVariant = (status: Task["status"]) => {
@@ -31,15 +33,18 @@ export default function StatusCell({ row }: { row: any }) {
         { value: TaskStatus.COMPLETED, label: "COMPLETED" }
       ] as const;
 
-    const [status, setStatus] = useState(row.getValue("status") as Task["status"]);
-  
+    const status= row.getValue("status") as Task["status"];
+    const { id } = useParams();
+  const [updateTask] = useUpdateTaskMutation();
+    const dispatch = useDispatch<AppDispatch>();
+    
     const handleStatusChange = (newStatus: Task["status"]) => {
-      handleUpdateTask({
-        key: "status",
-        value: newStatus,
-        taskId: row.original.id
-      });
-      setStatus(newStatus);
+      handleUpdateTask( {key:"status", 
+        value:newStatus,
+      taskId: row.original.id,
+      projectId: Number(id),
+      dispatch,
+        updateTask});
     };
   
     return (

@@ -15,7 +15,7 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable';
 import { Task, TaskStatus } from '@/types/common';
-import { handleUpdateTask } from '@/utils/dataTableFunctions';
+import { handleUpdateTask } from '@/utils/utilityFunctions';
 
 interface Column {
   id: number;
@@ -36,7 +36,7 @@ export function useKanbanDragDrop(
   }, [initialTasks]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+      useSensor(PointerSensor, {
       activationConstraint: { distance: 8 }
     }),
     useSensor(KeyboardSensor, {

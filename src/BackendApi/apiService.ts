@@ -28,58 +28,6 @@ export const addTask = async (task: any,projectId:number) => {
   }
 };
 
-export const getProjects = async () => {
-  try {
-    const response = await axiosInstance.get('/project/get-projects');
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
-      console.error("Error adding task:", errorMessage);
-      throw new Error(errorMessage);
-    }
-    console.error("Error adding task:", error);
-    throw error;
-  }
-};
-
-
-export const updateTask = async (updateObj: { taskId: number; 
-  fieldToUpdate: any; }) => {
-
-      const { taskId, fieldToUpdate } = updateObj;
-       console.log(fieldToUpdate);
-       console.log(typeof taskId);
-  try {
-    const response = await axiosInstance.patch(`/task/update-task/${taskId}`,fieldToUpdate);
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
-      console.error("Error adding task:", errorMessage);
-      throw new Error(errorMessage);
-    }
-    console.error("Error adding task:", error);
-    throw error;
-  }
-};
-
-export const getTasks = async (projectId:number) => {
-
-   try {
-    const response = await axiosInstance.get(`/task/tasks-with-allsubtasks/${projectId}`);
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
-      console.error("Error adding task:", errorMessage);
-      throw new Error(errorMessage);
-    }
-    console.error("Error adding task:", error);
-    throw error;
-  }
-};
-
 
 export const deleteTask = async (taskId:number) => {
 
@@ -167,21 +115,6 @@ export const logoutUser = async()=>{
 
    try {
     const response = await axiosInstance.post('/logout-user');
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
-      console.error("Error adding task:", errorMessage);
-      throw new Error(errorMessage);
-    }
-    console.error("Error adding task:", error);
-    throw error;
-  }
-}
-export const addProject = async(project:any)=>{
-
-   try {
-    const response = await axiosInstance.post(`/project/create-project/`, project);
     return response.data; 
   } catch (error) {
     if (axios.isAxiosError(error)) {

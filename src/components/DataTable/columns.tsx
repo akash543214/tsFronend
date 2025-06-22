@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DatePicker } from "../Assets/DatePicker"
+import { DatePicker } from "./DatePicker"
 import StatusCell from "./StatusCell"
 import PriorityCell from "./PriorityCell"
 import Actions from "./Actions"
@@ -10,8 +10,6 @@ import { Button } from "@/components/ui/button"
 import { Dispatch, SetStateAction } from "react"
 import { AddTask } from "./AddTask"
 // Define custom sorting orders
-const priorityOrder = {LOW:0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
-const statusOrder = { PENDING: 0, IN_PROGRESS: 1, COMPLETED: 2 };
 
 export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectId:number): ColumnDef<Task>[] => [
   {
@@ -113,15 +111,7 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectI
       )
     },
     cell: ({ row }) => <StatusCell row={row} />,
-    sortingFn: (rowA, rowB, columnId) => {
-    const statusA = rowA.getValue(columnId) as string;
-    const statusB = rowB.getValue(columnId) as string;
-    
-    const orderA = statusOrder[statusA as keyof typeof statusOrder] ?? 999;
-    const orderB = statusOrder[statusB as keyof typeof statusOrder] ?? 999;
-    
-    return orderA - orderB;
-  },
+   
   },
   {
     accessorKey: "priority",
@@ -137,15 +127,7 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectI
       )
     },
     cell: ({ row }) => <PriorityCell row={row} />,
-    sortingFn: (rowA, rowB, columnId) => {
-      const priorityA = rowA.getValue(columnId) as string;
-      const priorityB = rowB.getValue(columnId) as string;
-      
-      const orderA = priorityOrder[priorityA as keyof typeof priorityOrder] ?? 999;
-      const orderB = priorityOrder[priorityB as keyof typeof priorityOrder] ?? 999;
-      
-      return orderA - orderB;
-    },
+   
   },
   {
     accessorKey: "deadline",

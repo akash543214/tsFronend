@@ -4,9 +4,7 @@ import { AddTask } from "./AddTask";
 import {
     ColumnDef,
     flexRender,
-    SortingState,
     ExpandedState,
-    getSortedRowModel,
     getCoreRowModel,
     getExpandedRowModel,
     useReactTable,
@@ -22,6 +20,9 @@ import {
 } from "@/components/ui/table";
 import { Task, ViewType } from "@/types/common";
 import { Button } from "@/components/ui/button";
+import { useParams } from "react-router-dom";
+import { useGetTasksQuery } from "@/store/api/tasksApi";
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -34,30 +35,28 @@ interface DataTableProps<TData, TValue> {
 
 export default function DataTable<TData, TValue>({
     columns,
-    data,
-    isLoading,
     setTaskData,
     projectId,
     setView
 }: DataTableProps<TData, TValue>) {
 
     const [rowSelection, setRowSelection] = useState({});
-    const [sorting, setSorting] = useState<SortingState>([]);
     const [expanded, setExpanded] = useState<ExpandedState>({});
+
+        const {id} = useParams();
+const { data = [], isLoading } = useGetTasksQuery(Number(id));
+
 
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
         onRowSelectionChange: setRowSelection,
-        onSortingChange: setSorting,
         onExpandedChange: setExpanded,
         getSubRows: (row: any) => row.subtasks || [], // Tell TanStack where to find subtasks
         state: {
             rowSelection,
-            sorting,
             expanded,
         },
         enableExpanding: true,
