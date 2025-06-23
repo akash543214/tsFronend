@@ -28,22 +28,22 @@ export function DatePicker({ row }: DatePickerProps) {
   const { id } = useParams()
   const dispatch = useDispatch<AppDispatch>()
   const [updateTask] = useUpdateTaskMutation();
-  const handleDateChange = async (newDate: Date) => {
-    try {
-      await handleUpdateTask(
-        {key:"deadline", 
-        value:newDate,
+ const handleDateChange = async (newDate: Date) => {
+  try {
+    await handleUpdateTask({
+      key: "deadline",
+      value: newDate.toISOString(), 
       taskId: row.original.id,
       projectId: Number(id),
       dispatch,
-        updateTask})
-      setDate(newDate)
-      setOpen(false)
-    } catch (error) {
-      console.error("Date update failed:", error)
-    }
+      updateTask,
+    })
+    setDate(newDate)
+    setOpen(false)
+  } catch (error) {
+    console.error("Date update failed:", error)
   }
-
+}
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

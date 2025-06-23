@@ -1,7 +1,6 @@
 import { useState, 
   useCallback,
-   useMemo, 
-   useEffect }
+   useMemo }
     from 'react';
     
 import { 
@@ -16,7 +15,12 @@ import {
 import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable';
 import { Task, TaskStatus } from '@/types/common';
 import { handleUpdateTask } from '@/utils/utilityFunctions';
-
+import { useParams } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { useUpdateTaskMutation } from "@/store/api/tasksApi";
+import { useGetTasksQuery } from "@/store/api/tasksApi";
+import { useEffect } from 'react';
 interface Column {
   id: number;
   title: string;
@@ -25,16 +29,22 @@ interface Column {
 }
 
 export function useKanbanDragDrop(
-  initialTasks: Task[], 
 ) {
-  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const { id } = useParams();
+  console.log("Project ID:", id);
+  const { data = [] } = useGetTasksQuery(Number(id));
+  const [updateTask] = useUpdateTaskMutation();
+  const dispatch = useDispatch<AppDispatch>();
+  const [tasks, setTasks] = useState<Task[]>(data);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [originalColumn, setOriginalColumn] = useState<Column | null>(null); // Track original column
 
-  useEffect(() => {
-    setTasks(initialTasks);
-  }, [initialTasks]);
-
+    useEffect(()=>{
+      setTasks(data);
+    },[id, data]);
+    
+console.log("Tasks:");
   const sensors = useSensors(
       useSensor(PointerSensor, {
       activationConstraint: { distance: 8 }
@@ -115,13 +125,15 @@ export function useKanbanDragDrop(
 
     if (!activeColumn || !overColumn || activeColumn.id === overColumn.id) return;
 
-  //  console.log(`✅ Moving from ${activeColumn.title} to ${overColumn.title}`);
+    console.log(`✅ Moving from ${activeColumn.title} to ${overColumn.title}`);
 
     setTasks(prev => prev.map(task => 
       task.id === activeId 
-        ? { ...task, status: overColumn.status }
-        : task
-    ));
+       ? { ...task, status: overColumn.status }
+       : task
+   ));
+
+
   }, [originalColumn, findTaskColumn, columns]);
 
   const handleDragEnd = useCallback((event: DragEndEvent) => {
@@ -164,11 +176,13 @@ export function useKanbanDragDrop(
       // Moving to a different column
      // console.log(`🎯 FINAL MOVE from ${activeColumn.title} to ${overColumn.title}`);
       
-      handleUpdateTask({
-        key: "status",
-        value: overColumn.status,
-        taskId: activeId
-      });
+        handleUpdateTask( {
+              key:"status", 
+              value:overColumn.status,
+            taskId: activeId,
+            projectId: Number(id),
+            dispatch,
+              updateTask});
     } else {
       // Reordering within the same column
      // console.log("🔄 Reordering within same column");
@@ -192,7 +206,6 @@ export function useKanbanDragDrop(
 
   return {
     tasks,
-    setTasks,
     activeTask,
     columns,
     sensors,

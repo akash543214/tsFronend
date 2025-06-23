@@ -8,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import { ViewType } from "@/types/common";
 
 interface KanbanBoardProps { 
-    data: Task[];
     isLoading?: boolean;
    setView: React.Dispatch<React.SetStateAction<ViewType>>;
-
 }
 
-export default function KanbanBoard({ data, isLoading,setView }: KanbanBoardProps) {
+export default function KanbanBoard({ 
+     isLoading,
+     setView }: KanbanBoardProps) {
     const {
         columns,
         activeTask,
@@ -22,7 +22,7 @@ export default function KanbanBoard({ data, isLoading,setView }: KanbanBoardProp
         handleDragStart,
         handleDragOver,
         handleDragEnd
-    } = useKanbanDragDrop(data);
+    } = useKanbanDragDrop();
 
     if (isLoading) {
         return <LoadScreen />
@@ -35,7 +35,7 @@ export default function KanbanBoard({ data, isLoading,setView }: KanbanBoardProp
 
                 <h1 className="text-3xl font-bold tracking-tight">Kanban Board</h1>
                 <div className="text-sm text-muted-foreground">
-                    {data.length} total tasks
+                   data.length total tasks
                 </div>
             </div>
             

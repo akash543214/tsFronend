@@ -12,22 +12,6 @@ const axiosInstance = axios.create({
   withCredentials: true, 
 });
 
-export const addTask = async (task: any,projectId:number) => {
- 
-  try {
-    const response = await axiosInstance.post(`/task/create-task/${projectId}`, task);
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.message || `HTTP error! Status: ${error.response?.status}`;
-      console.error("Error adding task:", errorMessage);
-      throw new Error(errorMessage);
-    }
-    console.error("Error adding task:", error);
-    throw error;
-  }
-};
-
 
 export const deleteTask = async (taskId:number) => {
 

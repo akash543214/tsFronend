@@ -26,15 +26,11 @@ import { useGetTasksQuery } from "@/store/api/tasksApi";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-    isLoading: boolean;
-    projectId:number;
     setView: React.Dispatch<React.SetStateAction<ViewType>>;
 }
 
 export default function DataTable<TData, TValue>({
     columns,
-    projectId,
     setView
 }: DataTableProps<TData, TValue>) {
 
@@ -42,7 +38,7 @@ export default function DataTable<TData, TValue>({
     const [expanded, setExpanded] = useState<ExpandedState>({});
 
         const {id} = useParams();
-const { data = [], isLoading } = useGetTasksQuery(Number(id));
+        const { data = [], isLoading } = useGetTasksQuery(Number(id));
 
 
     const table = useReactTable({
@@ -76,7 +72,7 @@ const { data = [], isLoading } = useGetTasksQuery(Number(id));
             </div>
             <div className="flex flex-row-reverse mx-auto p-4">
                
-                <AddTask  projectId = {projectId} trigger={<Button variant="destructive">Add Task</Button>}/>
+                <AddTask  projectId = {Number(id)} trigger={<Button variant="destructive">Add Task</Button>}/>
             </div>
             <div className="flex justify-center mt-4 px-4">
                 <div className="w-full p-4 bg-white shadow-md rounded-md border">

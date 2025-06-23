@@ -84,7 +84,7 @@ export type Task = {
   assignee_id?: number | null;
   status: TaskStatus;
   priority: TaskPriority;
-  deadline: Date;
+  deadline: Date | string;
   created_at: Date;
   subtasks?: Task[];
 };

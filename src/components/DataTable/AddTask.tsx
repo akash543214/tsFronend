@@ -56,7 +56,7 @@ export function AddTask({
   const [addTask] = useCreateTaskMutation();
 
   const onSubmit = async (taskData: Task) => {
-
+          taskData.deadline = taskData.deadline instanceof Date ? taskData.deadline.toISOString() : taskData.deadline;
               handleAddTask({taskData, projectId,dispatch,addTask});
                setOpen(false);
 
@@ -150,7 +150,7 @@ export function AddTask({
                   rules={{ required: "Deadline is required" }}
                   render={({ field }) => (
                     <DatePicker 
-                      date={field.value}
+                      date={field.value instanceof Date ? field.value : (field.value ? new Date(field.value) : undefined)}
                       onDateChange={field.onChange}
                     />
                   )}

@@ -7,11 +7,10 @@ import Actions from "./Actions"
 import { Task } from "@/types/common";
 import { ArrowUpDown, ChevronDown, ChevronRight, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Dispatch, SetStateAction } from "react"
 import { AddTask } from "./AddTask"
 // Define custom sorting orders
 
-export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectId:number): ColumnDef<Task>[] => [
+export const getColumns = (projectId:number): ColumnDef<Task>[] => [
   {
     id: "expander",
     header: "",
@@ -41,7 +40,6 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectI
           {/* Add subtask button - only show for main tasks and first level subtasks */}
           {row.depth < 2 && (
             <AddTask
-                  setTaskData={setTaskData}
                   projectId={projectId}
                   parentId={row.original.id}
                   trigger={ <Plus className="h-4 w-4 text-gray-500 hover:text-gray-700 cursor-pointer" />}/> 
@@ -146,6 +144,6 @@ export const getColumns = (setTaskData:Dispatch<SetStateAction<Task[]>>,projectI
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions row={row} setTaskData={setTaskData}/>,
+    cell: ({ row }) => <Actions row={row}/>,
   },
 ]

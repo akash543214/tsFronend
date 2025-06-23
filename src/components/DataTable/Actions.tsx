@@ -10,16 +10,15 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { Task } from "@/types/common";
-import { Dispatch, SetStateAction } from "react";
 
   type ActionsProps = {
     row: {
       original: Task;
     },
-   setTaskData:Dispatch<SetStateAction<Task[]>>
+ 
   };
 
-export default function Actions({ row,setTaskData }:ActionsProps )
+export default function Actions({ row }:ActionsProps )
 {
     const task = row.original;
       //console.log("Rendering actions for", row.original);
@@ -27,7 +26,7 @@ export default function Actions({ row,setTaskData }:ActionsProps )
      const handleDelete = async (id:number) => {
       try {
         await deleteTask(id);
-        setTaskData(prev=>prev.filter(task=>task.id!==id))
+      //  setTaskData(prev=>prev.filter(task=>task.id!==id))
       } catch (error) {
         console.error("Error deleting task:", error);
       } finally{

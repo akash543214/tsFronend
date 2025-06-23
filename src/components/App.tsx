@@ -14,7 +14,6 @@ function App() {
   const verifyLogin = async () => {
     try {
       const res = await verifyUserlogin();
-      console.log(res);
       if (res?.success === true) {
         dispatch(login(res.data));
       }
