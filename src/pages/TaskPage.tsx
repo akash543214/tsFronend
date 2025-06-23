@@ -1,6 +1,5 @@
 import DataTable from "@/components/DataTable/DataTable";
 import { useState,useEffect,useCallback } from "react";
-import { getTasks } from "@/BackendApi/apiService";
 import { Task } from "@/types/common";
 import { getColumns } from "../components/DataTable/columns";
 import { ViewType } from "@/types/common";
@@ -49,7 +48,6 @@ console.log("taskdata",tasksData);
          columns={columns}  
          data={tasksData} 
          isLoading={isLoading}
-         setTaskData = {setTaskData}
           setView={setView}
           projectId={Number(id)}
          />  

@@ -1,23 +1,20 @@
-
-//import {updateTask } from "../BackendApi/apiService";
 import { AppDispatch } from "@/store/store";
 import { deleteTask } from "../BackendApi/apiService";
 import { tasksApi, useUpdateTaskMutation,useCreateTaskMutation } from "@/store/api/tasksApi";
-import { TaskFormData } from "@/types/common";
-
+import { Task } from "@/types/common";
 type handleUpdateTaskProps = {
   key:string,
   value:string | Date,
   taskId:number,
   projectId:number,
-  dispatch: AppDispatch, // Replace with the correct type for your dispatch function
+  dispatch: AppDispatch, 
   updateTask: ReturnType<typeof useUpdateTaskMutation>[0];
 }
 
 type handleAddTaskProps = {
-  taskData: TaskFormData, // Replace with the correct type for your task data
+  taskData: Task, 
   projectId:number,
-  dispatch: AppDispatch, // Replace with the correct type for your dispatch function
+  dispatch: AppDispatch, 
   addTask: ReturnType<typeof useCreateTaskMutation>[0];
 }
 function updateTaskInTree(tasks: any[], taskId: number, key: string, value: string | Date): boolean {
@@ -33,7 +30,21 @@ function updateTaskInTree(tasks: any[], taskId: number, key: string, value: stri
   }
   return false;
 }
+function insertTaskInTree(tree: Task[], newTask: Task): boolean {
+  for (const task of tree) {
+    if (task.id === newTask.parent_task_id) {
+      if (!task.subtasks) task.subtasks = [];
+      task.subtasks.push(newTask);
+      return true;
+    }
 
+    if (task.subtasks && insertTaskInTree(task.subtasks, newTask)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 export const handleUpdateTask = async ({key,
   value,
   taskId,
@@ -77,12 +88,15 @@ export const handleAddTask = async ({
    {
   // Optimistically update the local cache
   
-  // const patchResult = dispatch(
-    //tasksApi.util.updateQueryData("getTasks", projectId, (draft) => {
-      //  updateTaskInTree(draft, taskId, key, value);
-      
-    //})
-  //);
+   const patchResult = dispatch(
+  tasksApi.util.updateQueryData("getTasks", projectId, (draft) => {
+    if (!taskData.parent_task_id) {
+      draft.push(taskData);
+    } else {
+      insertTaskInTree(draft, taskData);
+    }
+  })
+);
   
   try {
    //const res= await updateTask({fieldToUpdate: { [key]: value },taskId });
@@ -96,7 +110,7 @@ export const handleAddTask = async ({
 
   } catch (error) {
     console.error("Error updating task:", error);
-     //  patchResult.undo(); // rollback
+       patchResult.undo(); // rollback
 
   } 
 };

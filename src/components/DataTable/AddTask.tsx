@@ -11,35 +11,26 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-//import { addTask } from "@/BackendApi/apiService";
 import { SelectPriority } from "./SelectPriority";
 import { DatePicker } from "./DatePickerModal";
 import { useForm, Controller } from "react-hook-form";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Task, TaskStatus } from "@/types/common";
+import { useState } from "react";
+import {  TaskStatus } from "@/types/common";
 import { TaskPriority } from "@/types/common";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { useCreateTaskMutation } from "@/store/api/tasksApi";
 import { handleAddTask } from "@/utils/utilityFunctions";
+import { Task } from "@/types/common";
 
-type TaskFormData = {
-  title: string;
-  content:string;
-  priority: TaskPriority;
-  deadline: Date;
-  status: TaskStatus;
-  parent_task_id?: number; // Optional, if needed for sub-tasks
-}
 
 type AddTaskProps = {
-  setTaskData: Dispatch<SetStateAction<Task[]>>,
   projectId:number,
   parentId?: number,
   trigger?: React.ReactNode
 };
 
-export function AddTask({setTaskData,
+export function AddTask({
   projectId,
   parentId,
   trigger}: AddTaskProps) {
@@ -51,7 +42,7 @@ export function AddTask({setTaskData,
     reset, 
     control,
     formState: { errors }, 
-  } = useForm<TaskFormData>({
+  } = useForm<Task>({
     defaultValues: {
       title: "",
       content:"",
@@ -64,62 +55,12 @@ export function AddTask({setTaskData,
     const dispatch = useDispatch<AppDispatch>();
   const [addTask] = useCreateTaskMutation();
 
-  const onSubmit = async (taskData: TaskFormData) => {
+  const onSubmit = async (taskData: Task) => {
 
               handleAddTask({taskData, projectId,dispatch,addTask});
                setOpen(false);
-  //  try {
-   //   const newTask = await handleAddTask(data, projectId,dispatch,addTask);
 
-          /*console.log("New task added:", newTask.data);
-          const parentTask = newTask.data.parent_task_id;
-
-          if(!parentTask) {   
-            // If it's a main task, add it directly to the task data
-            setTaskData(prev => [...prev, newTask.data]);
-          }
-          else {
-            console.log("Adding subtask to parent task:", parentId);
-
-              setTaskData(prev=>{
-                // Find the parent task and add the new subtask to it
-                  const newTaskData = [...prev];
-
-                    newTaskData.forEach(task=>{
-                  if(task.id===newTask.data.parent_task_id)
-                  {  
-                    if(!task.subtasks)
-                       {
-                      task.subtasks = [];
-                    }
-                    task.subtasks.push(newTask.data);
-                   
-                  }
-                  else{
-                    if(task.subtasks)
-                    {
-                      task.subtasks.forEach(subtask=>{
-                        if(subtask.id===newTask.data.parent_task_id)
-                        {
-                          if(!subtask.subtasks)
-                          {
-                            subtask.subtasks = [];
-                          }
-                          subtask.subtasks.push(newTask.data);
-                        }
-                      }
-                    )
-                    }
-                  }
-                  
-                })
-                return newTaskData;
-              })
-                
-          }
-         
-
-      reset({
+                reset({
         title: "",
         priority: TaskPriority.MEDIUM,
         deadline: new Date(),
@@ -127,12 +68,6 @@ export function AddTask({setTaskData,
         parent_task_id: parentId 
       });
 
-      setOpen(false);
-
-    } catch (err) {
-      console.error(err);
-    }
-      */
   };
 
   const handleOpenChange = (newOpen: boolean) => {
